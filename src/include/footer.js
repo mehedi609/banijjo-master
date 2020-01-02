@@ -36,25 +36,25 @@ class Footer extends Component {
                   </li>
                 </ul>
                 <p>
-                  <a href="https://www.facebook.com/bootsnipp">
+                  <a href="https://www.facebook.com/banijjo/" target='_blank'>
                     <i
                       id="social-fb"
                       className="fa fa-facebook-square fa-3x socialFooter"
                     ></i>
                   </a>
-                  <a href="https://twitter.com/bootsnipp">
+                  <a href="#">
                     <i
                       id="social-tw"
                       className="fa fa-twitter-square fa-3x socialFooter"
                     ></i>
                   </a>
-                  <a href="https://plus.google.com/+Bootsnipp-page">
+                  <a href="#">
                     <i
                       id="social-gp"
                       className="fa fa-google-plus-square fa-3x socialFooter"
                     ></i>
                   </a>
-                  <a href="mailto:bootsnipp@gmail.com">
+                  <a href="#">
                     <i
                       id="social-em"
                       className="fa fa-envelope-square fa-3x socialFooter"
