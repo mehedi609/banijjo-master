@@ -47,8 +47,6 @@ class ProductDetails extends Component {
 
     this.handleClickPlus = this.handleClickPlus.bind(this);
     this.handleClickMinus = this.handleClickMinus.bind(this);
-    this.addCartDirect = this.addCartDirect.bind(this);
-    this.addCartLocal = this.addCartLocal.bind(this);
     this.addWishDirect = this.addWishDirect.bind(this);
     this.addWishLocal = this.addWishLocal.bind(this);
     this.createAccountNext = this.createAccountNext.bind(this);
@@ -316,7 +314,7 @@ class ProductDetails extends Component {
     return spcArray;
   }
 
-  addCartLocal() {
+  addCartLocal = (data) => (e) => {
     let cartArr = [
       { productId: this.state.productId, quantity: this.state.productQuantity }
     ];
@@ -332,8 +330,41 @@ class ProductDetails extends Component {
     } else {
       localStorage.setItem("cart", JSON.stringify(cartArr));
     }
-    var link = document.getElementById("successCartMessage");
-    link.click();
+
+    if (data === 'buy_now')
+      window.location = '/cart';
+    else if (data === 'add_to_cart') {
+      var link = document.getElementById("successCartMessage");
+      link.click();
+    }
+  }
+
+  addCartDirect = (data) => (e) => {
+    fetch(base + "/api/add_cart_direct", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        productId: this.state.productId,
+        customerId: localStorage.customer_id,
+        quantity: this.state.productQuantity
+      })
+    })
+        .then(res => {
+          return res.json();
+        })
+        .then(response => {
+          if (response.data === true) {
+            if (data === 'buy_now')
+              window.location = '/cart';
+            else if (data === 'add_to_cart') {
+              var link = document.getElementById("successCartMessage");
+              link.click();
+            }
+          }
+        });
   }
 
   addWishLocal() {
@@ -353,31 +384,6 @@ class ProductDetails extends Component {
     }
     var link = document.getElementById("WishListModalButton");
     link.click();
-  }
-
-  addCartDirect() {
-    fetch(base + "/api/add_cart_direct", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        productId: this.state.productId,
-        customerId: localStorage.customer_id,
-        quantity: this.state.productQuantity
-      })
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(response => {
-        if (response.data === true) {
-          // window.location = '/cart';
-          var link = document.getElementById("successCartMessage");
-          link.click();
-        }
-      });
   }
 
   addWishDirect() {
@@ -759,10 +765,6 @@ class ProductDetails extends Component {
               <div className="clearfix"> </div>
             </div>
 
-            {/*<div className="occasional">
-              {this.specificationDetailsPart()}
-              <div className="clearfix"> </div>
-            </div>*/}
             <div className="simpleCart_shelfItem">
               <p>
                 <span>৳{this.state.productPrice}</span>{" "}
@@ -774,9 +776,28 @@ class ProductDetails extends Component {
                 <input type="hidden" name="w3ls_item" value="Smart Phone" />
                 <input type="hidden" name="amount" value="450.00" />
                 {!localStorage.customer_id ? (
+                    <button
+                        type="button"
+                        onClick={this.addCartLocal('buy_now')}
+                        style={{ backgroundColor: "009345", marginRight: "10px" }}
+                        className="w3ls-cart"
+                    >
+                      Buy Now
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={this.addCartDirect('buy_now')}
+                        style={{ backgroundColor: "009345", marginRight: "10px" }}
+                        className="w3ls-cart"
+                    >
+                      Buy Now
+                    </button>
+                )}
+                {!localStorage.customer_id ? (
                   <button
                     type="button"
-                    onClick={this.addCartLocal}
+                    onClick={this.addCartLocal('add_to_cart')}
                     style={{ backgroundColor: "009345", marginRight: "10px" }}
                     className="w3ls-cart"
                   >
@@ -785,7 +806,7 @@ class ProductDetails extends Component {
                 ) : (
                   <button
                     type="button"
-                    onClick={this.addCartDirect}
+                    onClick={this.addCartDirect('add_to_cart')}
                     style={{ backgroundColor: "009345", marginRight: "10px" }}
                     className="w3ls-cart"
                   >
