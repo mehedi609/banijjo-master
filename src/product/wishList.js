@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from "../include/header";
 import Footer from "../include/footer";
 import Breadcums from "../include/breadcums";
-import Categories from "../include/categories";
+import Categories from "../include/categories_mehedi_05_01_2020";
 const base = process.env.REACT_APP_FRONTEND_SERVER_URL;
 const frontEndUrl = process.env.REACT_APP_FRONTEND_URL;
 const fileUrl = process.env.REACT_APP_FILE_URL;

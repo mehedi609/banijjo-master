@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Footer from "../include/footer";
 import Navbar from "../include/Navbar";
-import Categories from "../include/categories";
+import Categories from "../include/categories_mehedi_05_01_2020";
 
 const base = process.env.REACT_APP_FRONTEND_SERVER_URL;
 const fileUrl = process.env.REACT_APP_FILE_URL;

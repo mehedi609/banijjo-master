@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Breadcums from "./include/breadcums";
 import Footer from "./include/footer";
-import Categories from "./include/categories";
+import Categories from "./include/categories_mehedi_05_01_2020";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";

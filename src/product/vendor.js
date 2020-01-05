@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import axios from "axios";
+
 import Breadcums from "../include/breadcums";
 import Footer from "../include/footer";
+
 const fileUrl = process.env.REACT_APP_FILE_URL;
 const base = process.env.REACT_APP_FRONTEND_SERVER_URL;
 const baseUrl = process.env.REACT_APP_FRONTEND_URL;
@@ -16,8 +19,7 @@ class Vendor extends Component {
       VendorCover: "",
       VendorCategories: [],
       CategoryIds: [],
-      ClickedCategory: 0,
-      ProductJSX: []
+      ClickedCategory: 0
     };
     this.handleClick = this.handleClick.bind(this);
     // this.addToCart = this.addToCart.bind(this);
@@ -29,7 +31,7 @@ class Vendor extends Component {
     this.getVendorCategories();
   }
 
-  getVendorCategories() {
+  /*getVendorCategories() {
     fetch(base + "/api/getVendorCategories", {
       method: "POST",
       headers: {
@@ -45,6 +47,7 @@ class Vendor extends Component {
       })
       .then(response => {
         if (response.data) {
+          console.log(response.data);
           this.setState({ VendorCategories: response.data });
           let CategoryList = [];
           let CategoryIdArr = [];
@@ -64,11 +67,39 @@ class Vendor extends Component {
           this.getProducts(CategoryIdArr);
         }
       });
+  }*/
+
+  getVendorCategories() {
+    axios
+      .get(`${base}/api/getVendorCategories/${this.state.vendorId}`)
+      .then(res => {
+        this.setState({ VendorCategories: res.data });
+
+        let CategoryList = [];
+        let CategoryIdArr = [];
+        let CategoryKeyValue = [];
+
+        this.state.VendorCategories.map(function(item, key) {
+          CategoryList.push(
+            <option value={item.category_id}>{item.category_name}</option>
+          );
+          CategoryIdArr.push(item.category_id);
+          CategoryKeyValue[item.category_id] = item.category_name;
+        });
+
+        this.setState({
+          CategoryList: CategoryList,
+          CategoryIds: CategoryIdArr,
+          CategoryKeyValue: CategoryKeyValue
+        });
+
+        this.getProducts(CategoryIdArr);
+      });
   }
 
   handleClick(event) {
     let Cat = event.target.value;
-    if (Cat == 0) {
+    if (Cat === 0) {
       this.getVendorCategories();
     } else {
       let CategoryIdArr = [];
@@ -77,7 +108,7 @@ class Vendor extends Component {
     }
   }
 
-  getVendorData() {
+  /*getVendorData() {
     fetch(base + "/api/getVendorData", {
       method: "POST",
       headers: {
@@ -100,6 +131,17 @@ class Vendor extends Component {
           });
         }
       });
+  }*/
+
+  getVendorData() {
+    axios.get(`${base}//api/getVendorData/${this.state.vendorId}`).then(res => {
+      const { name, logo, cover_photo } = res.data;
+      this.setState({
+        VendorName: name,
+        VendorLogo: logo,
+        VendorCover: cover_photo
+      });
+    });
   }
 
   getProducts(CategoryIdArr) {
@@ -406,13 +448,13 @@ class Vendor extends Component {
               <img
                 src={fileUrl + "/upload/vendor/cover1.jpg"}
                 alt="Snow"
-                style={{ width: "100%", height: "350px", marginTop: "40px" }}
+                style={{ width: "100%", marginTop: "40px" }}
               />
             ) : (
               <img
                 src={fileUrl + "/upload/vendor/" + this.state.VendorCover}
                 alt="Snow"
-                style={{ width: "100%", height: "350px", marginTop: "40px" }}
+                style={{ width: "100%", marginTop: "40px" }}
               />
             )}
           </div>
