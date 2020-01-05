@@ -31,44 +31,6 @@ class Vendor extends Component {
     this.getVendorCategories();
   }
 
-  /*getVendorCategories() {
-    fetch(base + "/api/getVendorCategories", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        vendorId: this.state.VendorId
-      })
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(response => {
-        if (response.data) {
-          console.log(response.data);
-          this.setState({ VendorCategories: response.data });
-          let CategoryList = [];
-          let CategoryIdArr = [];
-          let CategoryKeyValue = [];
-          this.state.VendorCategories.map(function(item, key) {
-            CategoryList.push(
-              <option value={item.category_id}>{item.category_name}</option>
-            );
-            CategoryIdArr.push(item.category_id);
-            CategoryKeyValue[item.category_id] = item.category_name;
-          });
-          this.setState({
-            CategoryList: CategoryList,
-            CategoryIds: CategoryIdArr,
-            CategoryKeyValue: CategoryKeyValue
-          });
-          this.getProducts(CategoryIdArr);
-        }
-      });
-  }*/
-
   getVendorCategories() {
     axios
       .get(`${base}/api/getVendorCategories/${this.state.vendorId}`)
@@ -107,31 +69,6 @@ class Vendor extends Component {
       this.getProducts(CategoryIdArr);
     }
   }
-
-  /*getVendorData() {
-    fetch(base + "/api/getVendorData", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        vendorId: this.state.VendorId
-      })
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(response => {
-        if (response.data) {
-          this.setState({
-            VendorName: response.data.name,
-            VendorLogo: response.data.logo,
-            VendorCover: response.data.cover_photo
-          });
-        }
-      });
-  }*/
 
   getVendorData() {
     axios.get(`${base}//api/getVendorData/${this.state.vendorId}`).then(res => {
