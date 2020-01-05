@@ -23,23 +23,29 @@
 	<link rel="stylesheet" href="/css/categoryDetails.css">
 
 	<!--    <link rel="stylesheet" href="/css/bootstrap_backup.css"> -->
-	<link rel="stylesheet" type="text/css"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-function hideURLbar(){ window.scrollTo(0,1); } </script>
-<link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href="/css/fasthover.css" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" href="/css/indexPageDesign.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-<script type="text/javascript" src="/js/superfish.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script type="application/x-javascript">
+		addEventListener("load", function() {
+			setTimeout(hideURLbar, 0);
+		}, false);
 
-<script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/css/fasthover.css" rel="stylesheet" type="text/css" media="all" />
+	<link rel="stylesheet" href="/css/indexPageDesign.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script type="text/javascript" src="/js/superfish.js"></script>
+
+	<script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/react/umd/react.production.min.js"></script>
+	<script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
 </head>
 
 <!--<style type="text/css">
@@ -1574,6 +1580,7 @@ ul {
 
 <script type="text/javascript">
 	$("#sp_vertical_megamenu li:has(.spvmm_container_menu_child)").doubleTapToGo();
+
 	function isMobile() {
 		if (navigator.userAgent.match(/Android/i) ||
 			navigator.userAgent.match(/webOS/i) ||
@@ -1585,9 +1592,10 @@ ul {
 	}
 }
 
-jQuery(document).ready(function ($) {
-	(function (element) {
-		var el = $(element), vf_megamenu = $('.vf-megamenu', el),
+jQuery(document).ready(function($) {
+	(function(element) {
+		var el = $(element),
+		vf_megamenu = $('.vf-megamenu', el),
 		level1 = $('.vf-megamenu >.spvmm-havechild', el),
 		_li = $('.spvmm-havechild', el),
 		vf_button = $('.vf-button', el),
@@ -1600,7 +1608,7 @@ jQuery(document).ready(function ($) {
 				}
 			}
 			vf_megamenu.append('<li class="more-wrap"><span class="more-view"><i class="fa fa-plus-square-o"></i>More Categories</span></li>');
-			$('.more-view', vf_megamenu).on('click touchstart', function () {
+			$('.more-view', vf_megamenu).on('click touchstart', function() {
 				if (level1.hasClass('cat-visible')) {
 					vf_megamenu.find('.cat-visible').removeClass('cat-visible').addClass('cat-hidden').stop().slideDown(400);
 					$(this).html('<i class="fa fa-minus-square-o"></i>Close Categories');
@@ -1614,15 +1622,17 @@ jQuery(document).ready(function ($) {
 		function _vfResponsiveMegaMenu() {
 			if ($(window).width() <= 767) {
 				vf_megamenu.hide();
-				$('.cat-title', el).on('click', function () {
+				$('.cat-title', el).on('click', function() {
 					$(this).toggleClass('active').parent().find('ul.vf-megamenu').stop().slideToggle('medium');
 					return false;
 				});
 				_li.addClass('vf-close');
 				_li.children('div').css('display', 'none');
 				if (vf_button.length) {
-					vf_button.on('click', function () {
-						var _this = $(this), li = _this.parent(), ul = li.children('ul');
+					vf_button.on('click', function() {
+						var _this = $(this),
+						li = _this.parent(),
+						ul = li.children('ul');
 						var _div = li.children('div');
 						if (li.hasClass('vf-close')) {
 							li.removeClass('vf-close').addClass('vf-open');
@@ -1648,9 +1658,8 @@ jQuery(document).ready(function ($) {
 		}
 		_vfResponsiveMegaMenu();
 
-		if (isMobile()) {
-		} else {
-			$(window).on('resize', function () {
+		if (isMobile()) {} else {
+			$(window).on('resize', function() {
 				_vfResponsiveMegaMenu();
 			});
 		}
@@ -1659,128 +1668,146 @@ jQuery(document).ready(function ($) {
 </script>
 
 <script type="text/javascript">
-
 	function imageZoom(imgID, resultID, imgName) {
 		$('.img-zoom-lens').remove();
 		var img, lens, result, cx, cy;
 		img = document.getElementById(imgID);
 		result = document.getElementById(resultID);
-		//console.log(result);
-		/*create lens:*/
-		lens = document.createElement("DIV");
-		lens.setAttribute("class", "img-zoom-lens");
-		/*insert lens:*/
-		img.parentElement.insertBefore(lens, img);
-		/*calculate the ratio between result DIV and lens:*/
-		cx = result.offsetWidth / lens.offsetWidth;
-		cy = result.offsetHeight / lens.offsetHeight;
+        //console.log(result);
+        /*create lens:*/
+        lens = document.createElement("DIV");
+        lens.setAttribute("class", "img-zoom-lens");
+        /*insert lens:*/
+        img.parentElement.insertBefore(lens, img);
+        /*calculate the ratio between result DIV and lens:*/
+        cx = result.offsetWidth / lens.offsetWidth;
+        cy = result.offsetHeight / lens.offsetHeight;
 
-		/*set background properties for the result DIV:*/
-		result.style.backgroundImage = "url('" + imgName + "')";
-		result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-		/*execute a function when someone moves the cursor over the image, or the lens:*/
-		lens.addEventListener("mousemove", moveLens);
-		img.addEventListener("mousemove", moveLens);
-		/*and also for touch screens:*/
-		lens.addEventListener("touchmove", moveLens);
-		img.addEventListener("touchmove", moveLens);
+        /*set background properties for the result DIV:*/
+        result.style.backgroundImage = "url('" + imgName + "')";
+        result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+        /*execute a function when someone moves the cursor over the image, or the lens:*/
+        lens.addEventListener("mousemove", moveLens);
+        img.addEventListener("mousemove", moveLens);
+        /*and also for touch screens:*/
+        lens.addEventListener("touchmove", moveLens);
+        img.addEventListener("touchmove", moveLens);
 
-		function moveLens(e) {
-			var pos, x, y;
-			/*prevent any other actions that may occur when moving over the image:*/
-			e.preventDefault();
-			/*get the cursor's x and y positions:*/
-			pos = getCursorPos(e);
-			/*calculate the position of the lens:*/
-			x = pos.x - (lens.offsetWidth / 2);
-			y = pos.y - (lens.offsetHeight / 2);
-			/*prevent the lens from being positioned outside the image:*/
-			if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; }
-			if (x < 0) { x = 0; }
-			if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; }
-			if (y < 0) { y = 0; }
-			/*set the position of the lens:*/
-			lens.style.left = x + "px";
-			lens.style.top = y + "px";
-			/*display what the lens "sees":*/
-			result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-		}
-		function getCursorPos(e) {
-			var a, x = 0, y = 0;
-			e = e || window.event;
-			/*get the x and y positions of the image:*/
-			a = img.getBoundingClientRect();
-			/*calculate the cursor's x and y coordinates, relative to the image:*/
-			x = e.pageX - a.left;
-			y = e.pageY - a.top;
-			/*consider any page scrolling:*/
-			x = x - window.pageXOffset;
-			y = y - window.pageYOffset;
-			return { x: x, y: y };
-		}
-	}
+        function moveLens(e) {
+        	var pos, x, y;
+        	/*prevent any other actions that may occur when moving over the image:*/
+        	e.preventDefault();
+        	/*get the cursor's x and y positions:*/
+        	pos = getCursorPos(e);
+        	/*calculate the position of the lens:*/
+        	x = pos.x - (lens.offsetWidth / 2);
+        	y = pos.y - (lens.offsetHeight / 2);
+        	/*prevent the lens from being positioned outside the image:*/
+        	if (x > img.width - lens.offsetWidth) {
+        		x = img.width - lens.offsetWidth;
+        	}
+        	if (x < 0) {
+        		x = 0;
+        	}
+        	if (y > img.height - lens.offsetHeight) {
+        		y = img.height - lens.offsetHeight;
+        	}
+        	if (y < 0) {
+        		y = 0;
+        	}
+        	/*set the position of the lens:*/
+        	lens.style.left = x + "px";
+        	lens.style.top = y + "px";
+        	/*display what the lens "sees":*/
+        	result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+        }
+
+        function getCursorPos(e) {
+        	var a, x = 0,
+        	y = 0;
+        	e = e || window.event;
+        	/*get the x and y positions of the image:*/
+        	a = img.getBoundingClientRect();
+        	/*calculate the cursor's x and y coordinates, relative to the image:*/
+        	x = e.pageX - a.left;
+        	y = e.pageY - a.top;
+        	/*consider any page scrolling:*/
+        	x = x - window.pageXOffset;
+        	y = y - window.pageYOffset;
+        	return {
+        		x: x,
+        		y: y
+        	};
+        }
+    }
 </script>
 
 <script type="text/javascript">
-	$(document).ready(function () {
+	$(document).ready(function() {
 
 		var id = '#dialog';
-		//Get the screen height and width
-		var maskHeight = $(document).height();
-		var maskWidth = $(window).width();
-		//Set heigth and width to mask to fill up the whole screen
-		$('#mask').css({ 'width': maskWidth, 'height': maskHeight });
-		//transition effect
-		$('#mask').fadeIn(500);
-		$('#mask').fadeTo("slow", 0.9);
-		//Get the window height and width
-		var winH = $(window).height();
-		var winW = $(window).width();
-		//Set the popup window to center
-		$(id).css('top', winH / 2 - $(id).height() / 2);
-		$(id).css('left', winW / 2 - $(id).width() / 2);
-		//transition effect
-		$(id).fadeIn(2000);
-		//if close button is clicked
-		$('.window .closeButton').click(function (e) {
-			//Cancel the link behavior
-			e.preventDefault();
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+        //Set heigth and width to mask to fill up the whole screen
+        $('#mask').css({
+        	'width': maskWidth,
+        	'height': maskHeight
+        });
+        //transition effect
+        $('#mask').fadeIn(500);
+        $('#mask').fadeTo("slow", 0.9);
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+        //Set the popup window to center
+        $(id).css('top', winH / 2 - $(id).height() / 2);
+        $(id).css('left', winW / 2 - $(id).width() / 2);
+        //transition effect
+        $(id).fadeIn(2000);
+        //if close button is clicked
+        $('.window .closeButton').click(function(e) {
+            //Cancel the link behavior
+            e.preventDefault();
 
-			$('#mask').hide();
-			$('.window').hide();
-		});
+            $('#mask').hide();
+            $('.window').hide();
+        });
 
-		//if mask is clicked
-		$('#mask').click(function () {
-			$(this).hide();
-			$('.window').hide();
-		});
+        //if mask is clicked
+        $('#mask').click(function() {
+        	$(this).hide();
+        	$('.window').hide();
+        });
 
-		$('.registerSubmit').click(function(e){
-			e.preventDefault();
-			var email = $(this).closest('.form-signin').find('#inputEmail').val();
-			var password = $(this).closest('.form-signin').find('#inputPassword').val();
+        $('.registerSubmit').click(function(e) {
+        	e.preventDefault();
+        	var email = $(this).closest('.form-signin').find('#inputEmail').val();
+        	var password = $(this).closest('.form-signin').find('#inputPassword').val();
 
-			var cartData = JSON.parse(localStorage.getItem('cart'));
-			var productIds = [];
-			cartData.map(function(val, index){
-				productIds.push(val.productId)
-			});
-			var uniqueProductIds = productIds.filter((v, i, a) => a.indexOf(v) === i);
-			var revisedCartData = [];
-			uniqueProductIds.map(function(valParent, keyParent){
-				var totalCount = 0;
-				cartData.map(function(val, key){
-					if(valParent == val.productId){
-						totalCount += val.quantity;
-					}
-				});
-				revisedCartData.push({productId: valParent, quantity: totalCount})
-			});
-			
-			console.log('~~~~~~~~~', process.env.REACT_APP_FRONTEND_SERVER_URL);
-		})
-	});
+        	var cartData = JSON.parse(localStorage.getItem('cart'));
+        	var productIds = [];
+        	cartData.map(function(val, index) {
+        		productIds.push(val.productId)
+        	});
+        	var uniqueProductIds = productIds.filter((v, i, a) => a.indexOf(v) === i);
+        	var revisedCartData = [];
+        	uniqueProductIds.map(function(valParent, keyParent) {
+        		var totalCount = 0;
+        		cartData.map(function(val, key) {
+        			if (valParent == val.productId) {
+        				totalCount += val.quantity;
+        			}
+        		});
+        		revisedCartData.push({
+        			productId: valParent,
+        			quantity: totalCount
+        		})
+        	});
+
+        	console.log('~~~~~~~~~', process.env.REACT_APP_FRONTEND_SERVER_URL);
+        })
+    });
 </script>
 
 
@@ -1801,251 +1828,234 @@ jQuery(document).ready(function ($) {
 	</div>
 
 	<div class="row">
-		<div class="medium-3 columns">
+		<div class="columns small-4 large-4">
 
 			<p style="text-align: left">
 				<a href="http://banijjo.com.bd"><img src="../image/banijjoLogo.png" class="imglogo" alt="company logo"></a>
 			</p>
 		</div>
+        <!-- <div class="medium-3 columns">
 
-		<div class=" medium-9 columns">
+			<p style="text-align: left">
+				<a href="http://banijjo.com.bd"><img src="../image/banijjoLogo.png" class="imglogo" alt="company logo"></a>
+			</p>
+		</div> -->
+
+		<div class="columns small-8 large-4">
+			<div class="columns small-2 large-4">
+				<ul class="dropdown hotLineIcon" data-dropdown-menu style="font-size: 16px;">
+
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-phone" style="font-size:14px;color:#ec1624;margin-top:30px;
+						padding-left: 25px;"></i></a>
+						<ul class="dropdown-menu">
+
+							<li><a href="#" style="color:#ec1624">09677-222 222</a></li>
+
+						</ul>
+
+					</li>
+
+				</ul>
+
+			</div>
 
 			<!--Mobile View-->
-			<section>
-				<div class="columns small-4 large-4" style="margin-top:12px">
-				</div>
-				<div class="columns small-2 large-4" style="margin-top:15px;">
-					<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">
-						<li class="has-submenu">
-							<a href="#"><i class="fa fa-user-o" style="color:#009345;font-size: 16px"></i></a>
-							<ul class="dropdown-menu">
-								<li>
-									<div class="navbar-login">
-										<div class="row">
-											<div class="col-lg-12">
-												<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
-													Banijjo!</strong></p>
-												<div class="customerDiv">
-												</div>
+
+            <!-- 	<div class="columns small-4 large-4" style="margin-top:12px">
+			</div>
+			<div class="columns small-2 large-4" style="margin-top:15px;">
+				<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-o" style="color:#009345;font-size: 16px"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<div class="navbar-login">
+									<div class="row">
+										<div class="col-lg-12">
+											<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
+											Banijjo!</strong></p>
+											<div class="customerDiv">
 											</div>
 										</div>
 									</div>
-								</li>
-								<li><a href="#">My Orders</a></li>
-								<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
-								<li><a href="#">Wish List</a></li>
-								<li><a href="#">My Favorite Stores</a></li>
-								<li><a href="#">My Coupons</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-				<div class="columns small-3 large-4" style="margin-top:11px;">
-					<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 16px;">
-						<li class="has-submenu">
-							<a href="#"><i class="fa fa-bars" style="color: #009345;"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Seller Center</a></li>
-								<li><a href="#">Help<span class="unread-message-count"></span></a></li>
-								<li><a href="#">Buyer Protection</a></li>
-								<li><a href="#">App</a></li>
-								<li><a href="#">Taka/USD</a></li>
-								<li><a href="#">Bangla/English</a></li>
-								<li><a href="#">Wish List</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-				<div class="columns small-3 large-4" style="margin-top:12px">
-					<div class="cartIcon" id="cartID">
-						<!--               <a class="" href="cart.html" style="color:#009345;font-size: 12px;">-->
-						<!--                  <i class="fa fa-shopping-cart" style="font-size: 18px"></i>-->
-						<!--                  <span class="badge badge-light" style="background-color: #ec1624;font-size: 8px">5</span>-->
-						<!--               </a>-->
-					</div>
-				</div>
-			</section>
+								</div>
+							</li>
+							<li><a href="#">My Orders</a></li>
+							<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
+							<li><a href="#">Wish List</a></li>
+							<li><a href="#">My Favorite Stores</a></li>
+							<li><a href="#">My Coupons</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="columns small-3 large-4" style="margin-top:11px;">
+				<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 16px;">
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-bars" style="color: #009345;"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Seller Center</a></li>
+							<li><a href="#">Help<span class="unread-message-count"></span></a></li>
+							<li><a href="#">Buyer Protection</a></li>
+							<li><a href="#">App</a></li>
+							<li><a href="#">Taka/USD</a></li>
+							<li><a href="#">Bangla/English</a></li>
+							<li><a href="#">Wish List</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div> -->
 
-			<ul class="dropdown menu" data-dropdown-menu
-				style="font-size: 11px; height: 31px !important; top: -12px !important;">
-				<li class="has-submenu">
-					<a href="http://admin.banijjo.com.bd/">Seller Center |</a>
-
-				</li>
-				<li class="has-submenu">
-					<a href="#">Help |</a>
-
-				</li>
-				<li class="has-submenu">
-					<a href="#">Buyer Protection |</a>
-
-				</li>
-
-				<li class="has-submenu">
-					<a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Wish List |</a>
-
-				</li>
-				<li class="has-submenu">
-					<a href="#"><i class="fa fa-user-o" aria-hidden="true"></i> Account |</a>
-					<ul class="dropdown-menu">
-						<li>
-							<div class="navbar-login">
-								<div class="row">
-									<div class="col-lg-12">
-										<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
+			<div class="columns small-2 large-4" style="margin-top:30px;">
+				<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-o" style="color:#009345;font-size: 16px;padding-left: 25px"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<div class="navbar-login">
+									<div class="row">
+										<div class="col-lg-12">
+											<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
 											Banijjo!</strong></p>
-										<div class="customerDiv">
+											<div class="customerDiv">
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</li>
-						<li><a href="#">My Orders</a></li>
-						<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
-						<li><a href="#">Wish List</a></li>
-						<li><a href="#">My Favorite Stores</a></li>
-						<li><a href="#">My Coupons</a></li>
-					</ul>
-				</li>
-				<li class="has-submenu">
-					<a href="#"><img src="/image/bd_small.png" alt="company logo"></a>
-				</li>
-			</ul>
+							</li>
+							<li><a href="#">My Orders</a></li>
+							<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
+							<li><a href="#">Wish List</a></li>
+							<li><a href="#">My Favorite Stores</a></li>
+							<li><a href="#">My Coupons</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 
-		</div>
+			<div class="columns small-3 large-4" style="margin-top:27px;padding-left: 37px">
+
+				<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 16px;">
+
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-bars" style="color: #009345;padding-left: 10px;"></i></a>
+						<ul class="dropdown-menu">
+
+							<li><a href="http://admin.banijjo.com.bd/">Seller Center</a></li>
+							<li><a href="#">Help<span class="unread-message-count"></span></a></li>
+							<li><a href="#">Buyer Protection</a></li>
+							<li><a href="#">Wish List</a></li>
+						</ul>
+
+					</li>
+
+				</ul>
+
+
+			</div>
+			<div class="columns small-5 large-4" style="margin-top:27px;padding-left: 34px">
+				<div class="cartIcon" id="cartID">
+                    <!--   <a class="" href="cart.html" style="color:#009345;font-size: 12px;">
+      <i class="fa fa-shopping-cart" style="font-size: 18px"></i>
+      <span class="badge badge-light" style="background-color: #ec1624;font-size: 8px">3</span>
+  </a> -->
+
+</div>
+</div>
+            <!-- <div class="columns small-3 large-4" style="margin-top:12px">
+	<div class="cartIcon" id="cartID">
+		<a class="" href="cart.html" style="color:#009345;font-size: 12px;">
+			<i class="fa fa-shopping-cart" style="font-size: 18px"></i>
+		</a>
 	</div>
+</div> -->
 
-<!--	<div class="row">-->
-<!--		<div class="medium-3 columns">-->
-<!--			<a href="http://banijjo.com.bd">-->
-<!--				<p style="text-align: left"><img src="/image/banijjoLogo.png" class="imglogo" alt="company logo"></p>-->
-<!--			</a>-->
-<!--		</div>-->
 
-<!--		<div class=" medium-9 columns" style="background-color:#EFF0F2;">-->
-<!--			<div class="row">-->
-<!--				<div class="columns small-2 large-4" style="margin-top:16px;padding-left: 30px;">-->
-<!--					<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">-->
-<!--						<li class="has-submenu">-->
-<!--							<a href="#">Account</a>-->
-<!--							<ul class="dropdown-menu">-->
-<!--								<li>-->
-<!--									<div class="navbar-login">-->
-<!--										<div class="row">-->
-<!--											<div class="col-lg-12">-->
-<!--												<p class="text-left" style="padding-left: 10px;"><strong>Welcome to-->
-<!--												Banijjo!</strong></p>-->
-<!--												<div class="customerDiv">-->
-<!--												</div>-->
-<!--											</div>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</li>-->
-<!--								<li><a href="#">My Orders</a></li>-->
-<!--								<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>-->
-<!--								<li><a href="#">Wish List</a></li>-->
-<!--								<li><a href="#">My Favorite Stores</a></li>-->
-<!--								<li><a href="#">My Coupons</a></li>-->
-<!--							</ul>-->
-<!--						</li>-->
-<!--					</ul>-->
-<!--				</div>-->
-<!--				&lt;!&ndash; <div class="columns small-6 large-4" style="margin-top:10px"> &ndash;&gt;-->
-<!--					<div class="columns small-6 large-4" style="margin-top:15px; padding-left: 80px">-->
-<!--						<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 11px;">-->
-<!--							<li class="has-submenu">-->
-<!--								<a href="#"><i class="fa fa-bars" style="color: #009345;"></i></a>-->
-<!--								<ul class="dropdown-menu">-->
-<!--									<li><a href="http://admin.banijjo.com.bd/">Seller Center</a></li>-->
-<!--									<li><a href="#">Help<span class="unread-message-count"></span></a></li>-->
-<!--									<li><a href="#">Buyer Protection</a></li>-->
-<!--									<li><a href="#">App</a></li>-->
-<!--									<li><a href="#">Taka/USD</a></li>-->
-<!--									<li><a href="#">Bangla/English</a></li>-->
-<!--									<li><a href="#">Wish List</a></li>-->
-<!--								</ul>-->
-<!--							</li>-->
-<!--						</ul>-->
-<!--					</div>-->
+<ul class="dropdown menu" data-dropdown-menu style="font-size: 11px; height: 31px !important; top: -12px !important;width:885px;float: right;">
+	<li class="has-submenu">
+		<a href="#"><i class="fa fa-phone" style="font-size:14px;color:#ec1624"> 09677-222 222</i></a>
 
-<!--					<ul class="dropdown menu" data-dropdown-menu-->
-<!--					style="font-size: 11px; height: 31px !important; top: -12px !important;">-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="http://admin.banijjo.com.bd/">Seller Center |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#">Help |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#">Buyer Protection |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#"><i class="fa fa-mobile" aria-hidden="true"></i> App |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#">Taka/USD |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#">Bangla/English |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Wish List |</a>-->
-<!--						<ul class="submenu menu vertical" data-submenu>-->
+	</li>
+	<li class="has-submenu">
+		<a href="#">&nbsp;</a>
 
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#"><i class="fa fa-user-o" aria-hidden="true"></i> Account |</a>-->
-<!--						<ul class="dropdown-menu">-->
-<!--							<li>-->
-<!--								<div class="navbar-login">-->
-<!--									<div class="row">-->
-<!--										<div class="col-lg-12">-->
-<!--											<p class="text-left" style="padding-left: 10px;"><strong>Welcome to-->
-<!--											Banijjo!</strong></p>-->
-<!--											<div class="customerDiv">												-->
-<!--											</div>											-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--							</li>-->
-<!--							<li><a href="#">My Orders</a></li>-->
-<!--							<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>-->
-<!--							<li><a href="#">Wish List</a></li>-->
-<!--							<li><a href="#">My Favorite Stores</a></li>-->
-<!--							<li><a href="#">My Coupons</a></li>-->
-<!--						</ul>-->
-<!--					</li>-->
-<!--					<li class="has-submenu">-->
-<!--						<a href="#"><img src="/image/bd_small.png" alt="company logo"></a>-->
-<!--					</li>-->
-<!--				</ul>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
-	<br>
+	</li>
+	<li class="has-submenu">
+		<a href="#">&nbsp;</a>
 
-	<!-- Modal register and login -->
+	</li>
+	<li class="has-submenu">
+		<a href="#"> &nbsp;</a>
 
-	<div class="modal" id="exampleModalRegister" tabindex="-1" role="dialog">
-		<div class="modal-dialog regLoginModal" role="document">
-			<div class="modal-content" >
-				<div class="modal-header">
-					<h5 class="modal-title" style="text-align: center;">Banijjo.com</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"
-					style="margin-top: -25px;">
+	</li>
+	<li class="has-submenu">
+		<a href="#"> &nbsp;</a>
+
+	</li>
+	<li class="has-submenu">
+		<a href="#"> &nbsp;</a>
+
+	</li>
+	<li class="has-submenu">
+		<a href="#"> &nbsp;</a>
+
+	</li>
+	<li class="has-submenu">
+		<a href="http://admin.banijjo.com.bd/">Seller Center |</a>
+
+	</li>
+	<li class="has-submenu">
+		<a href="#">Help |</a>
+
+	</li>
+	<li class="has-submenu">
+		<a href="#">Buyer Protection |</a>
+
+	</li>
+
+	<li class="has-submenu">
+		<a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Wish List |</a>
+
+	</li>
+	<li class="has-submenu">
+		<a href="#"><i class="fa fa-user-o" aria-hidden="true"></i> Account |</a>
+		<ul class="dropdown-menu">
+			<li>
+				<div class="navbar-login">
+					<div class="row">
+						<div class="col-lg-12">
+							<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
+							Banijjo!</strong></p>
+							<div class="customerDiv">
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li><a href="#">My Orders</a></li>
+			<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
+			<li><a href="#">Wish List</a></li>
+			<li><a href="#">My Favorite Stores</a></li>
+			<li><a href="#">My Coupons</a></li>
+		</ul>
+	</li>
+	<li class="has-submenu">
+		<a href="#"><img src="/image/bd_small.png" alt="company logo"></a>
+	</li>
+</ul>
+</div>
+</div>
+<br>
+
+<!-- Modal register and login -->
+
+<div class="modal" id="exampleModalRegister" tabindex="-1" role="dialog">
+	<div class="modal-dialog regLoginModal" role="document">
+		<div class="modal-content">
+			<div class="modal-header" style="border-bottom: none;">
+				<h5 align="center"><img src="/image/banijjoModalLogo.png" alt="company logo"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;">
 					<span aria-hidden="true">×</span>
 				</button>
 			</div>
@@ -2056,60 +2066,43 @@ jQuery(document).ready(function ($) {
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
 					<form class="form-signin">
-						<div class="modal-body">							
+						<div class="modal-body">
 							<div class="form-label-group">
-								<input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-								required autofocus>
+								<input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Email address" required autofocus>
 							</div>
 							<div class="form-label-group">
-								<input type="password" id="inputPassword" class="form-control"
-								placeholder="Password" required>
-							</div>							
+								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #FF4747">Create
+							<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #009345;border-color:#009345">Create
 							Account</button>
-							<p><a href="#" target="_blank" class="">Forgot Password?</a></p>
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<ul class="social-icons-ql">
-									<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-									<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-									<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-									<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-									<li><a href="#"><i class="fa fa-reddit"></i></a></li>
-									<li><a href="#"><i class="fa fa-stumbleupon"></i></a></li>
-								</ul>
-							</div>
+							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+							<p style="text-align: center;"><a href="https://www.facebook.com/bootsnipp" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+							</p>
+
 						</div>
 					</form>
 				</div>
 				<div id="menu1" class="tab-pane fade">
-					<form class="form-signin">	
-						<div class="modal-body">							
+					<form class="form-signin">
+						<div class="modal-body">
 							<div class="form-label-group">
-								<input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-								required autofocus>
+								<input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Email address" required autofocus>
 							</div>
 							<div class="form-label-group">
-								<input type="password" id="inputPassword" class="form-control"
-								placeholder="Password" required>
-							</div>							
+								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #FF4747">LOGIN</button>
-							<p><a href="#" target="_blank" class="">Forgot Password?</a></p>
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<ul class="social-icons-ql">
-									<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-									<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-									<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-									<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-									<li><a href="#"><i class="fa fa-reddit"></i></a></li>
-									<li><a href="#"><i class="fa fa-stumbleupon"></i></a></li>
-								</ul>
-							</div>
+							<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #009345;border-color:#009345">LOGIN</button>
+							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+							<p style="text-align: center;"><a href="https://www.facebook.com/bootsnipp" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+							</p>
 						</div>
 					</form>
 				</div>
@@ -2122,81 +2115,63 @@ jQuery(document).ready(function ($) {
 <div class="modal" id="exampleModalLogin" tabindex="-1" role="dialog">
 	<div class="modal-dialog regLoginModal" role="document">
 		<div class="modal-content" style="align-content: center;">
-			<div class="modal-header">
-				<h5 class="modal-title" style="text-align: center;">Banijjo.com</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"
-				style="margin-top: -25px;">
-				<span aria-hidden="true">×</span>
-			</button>
-		</div>
-		<ul class="nav nav-tabs">
-			<li style="padding-left: 80px"><a data-toggle="tab" href="#home2">REGISTER</a></li>
-			<li class="active" style="padding-left: 30px"><a data-toggle="tab" href="#menu2">Login</a></li>
-		</ul>
-		<div class="tab-content">
-			<div id="home2" class="tab-pane fade">
-				<form class="form-signin">
-					<div class="modal-body">							
-						<div class="form-label-group">
-							<input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-							required autofocus>
-						</div>
-						<div class="form-label-group">
-							<input type="password" id="inputPassword" class="form-control"
-							placeholder="Password" required>
-						</div>							
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #FF4747">Create
-						Account</button>
-						<p><a href="#" target="_blank" class="">Forgot Password?</a></p>
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<ul class="social-icons-ql">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-								<li><a href="#"><i class="fa fa-reddit"></i></a></li>
-								<li><a href="#"><i class="fa fa-stumbleupon"></i></a></li>
-							</ul>
-						</div>
-					</div>
-				</form>
+			<div class="modal-header" style="border-bottom: none;">
+				<h5 align="center"><img src="/image/banijjoModalLogo.png" alt="company logo"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;">
+					<span aria-hidden="true">×</span>
+				</button>
 			</div>
-			<div id="menu2" class="tab-pane fade in active">
-				<div class="modal-body">
+			<ul class="nav nav-tabs">
+				<li style="padding-left: 80px"><a data-toggle="tab" href="#home2">REGISTER</a></li>
+				<li class="active" style="padding-left: 30px"><a data-toggle="tab" href="#menu2">LOGIN</a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="home2" class="tab-pane fade">
 					<form class="form-signin">
-						<div class="form-label-group">
-							<input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-							required autofocus>
+						<div class="modal-body">
+							<div class="form-label-group">
+								<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+							</div>
+							<div class="form-label-group">
+								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+							</div>
 						</div>
-						<div class="form-label-group">
-							<input type="password" id="inputPassword" class="form-control"
-							placeholder="Password" required>
-						</div>							
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #FF4747">Login</button>
-						<p><a href="#" target="_blank" class="">Forgot Password?</a></p>
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<ul class="social-icons-ql">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-								<li><a href="#"><i class="fa fa-reddit"></i></a></li>
-								<li><a href="#"><i class="fa fa-stumbleupon"></i></a></li>
-							</ul>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #009345;border-color:#009345">Create
+							Account</button>
+							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+							<p style="text-align: center;"><a href="https://www.facebook.com/bootsnipp" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+							</p>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
+				<div id="menu2" class="tab-pane fade in active">
+					<div class="modal-body">
+						<form class="form-signin">
+							<div class="form-label-group">
+								<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+							</div>
+							<div class="form-label-group">
+								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #009345;border-color:#009345">Login</button>
+							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+							<p style="text-align: center;"><a href="https://www.facebook.com/bootsnipp" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+							</p>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
+
 
 <div id="root">
 
@@ -2215,48 +2190,48 @@ jQuery(document).ready(function ($) {
 		window.location.href = "/";
 	}
 
-	$(window).load(function () {
-			// there are 2 customerDiv classes.
-			document.getElementsByClassName("customerDiv")[0].innerHTML = '';
-			document.getElementsByClassName("customerDiv")[1].innerHTML = '';
+	$(window).load(function() {
+            // there are 2 customerDiv classes.
+            document.getElementsByClassName("customerDiv")[0].innerHTML = '';
+            document.getElementsByClassName("customerDiv")[1].innerHTML = '';
 
-			if (localStorage.customer_id) {
-				document.getElementsByClassName("customerDiv")[0].innerHTML = '<div class="col-lg-6"><p class="text-left"><button href="#" id="loginButton" class="btn btn-block btn-sm"><i class="fa fa-user"></i> Profile</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" style="background:#ec1c24" onclick="logout()" href="#" class="btn btn-block btn-sm"><i class="fa fa-sign-out"></i> Logout</button></p></div>';
-				document.getElementsByClassName("customerDiv")[1].innerHTML = '<div class="col-lg-6"><p class="text-left"><button href="#" id="loginButton" class="btn btn-block btn-sm"><i class="fa fa-user"></i> Profile</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" style="background:#ec1c24" onclick="logout()" href="#" class="btn btn-block btn-sm"><i class="fa fa-sign-out"></i> Logout</button></p></div>';
-			} else {
-				document.getElementsByClassName("customerDiv")[0].innerHTML = '<div class="col-lg-6"><p class="text-left"><button id="registerButton" data-toggle="modal" data-target="#exampleModalRegister" class="btn btn-block btn-sm">Register</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" data-toggle="modal" data-target="#exampleModalLogin" class="btn btn-block btn-sm">Login</button></p></div>';
-				document.getElementsByClassName("customerDiv")[1].innerHTML = '<div class="col-lg-6"><p class="text-left"><button id="registerButton" data-toggle="modal" data-target="#exampleModalRegister" class="btn btn-block btn-sm">Register</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" data-toggle="modal" data-target="#exampleModalLogin" class="btn btn-block btn-sm"><i class="fa fa-login"></i> Login</button></p></div>';
-			}
+            if (localStorage.customer_id) {
+            	document.getElementsByClassName("customerDiv")[0].innerHTML = '<div class="col-lg-6"><p class="text-left"><button href="#" id="loginButton" class="btn btn-block btn-sm"><i class="fa fa-user"></i> Profile</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" style="background:#ec1c24" onclick="logout()" href="#" class="btn btn-block btn-sm"><i class="fa fa-sign-out"></i> Logout</button></p></div>';
+            	document.getElementsByClassName("customerDiv")[1].innerHTML = '<div class="col-lg-6"><p class="text-left"><button href="#" id="loginButton" class="btn btn-block btn-sm"><i class="fa fa-user"></i> Profile</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" style="background:#ec1c24" onclick="logout()" href="#" class="btn btn-block btn-sm"><i class="fa fa-sign-out"></i> Logout</button></p></div>';
+            } else {
+            	document.getElementsByClassName("customerDiv")[0].innerHTML = '<div class="col-lg-6"><p class="text-left"><button id="registerButton" data-toggle="modal" data-target="#exampleModalRegister" class="btn btn-block btn-sm">Register</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" data-toggle="modal" data-target="#exampleModalLogin" class="btn btn-block btn-sm">Login</button></p></div>';
+            	document.getElementsByClassName("customerDiv")[1].innerHTML = '<div class="col-lg-6"><p class="text-left"><button id="registerButton" data-toggle="modal" data-target="#exampleModalRegister" class="btn btn-block btn-sm">Register</button></p></div><div class="col-lg-6"><p class="text-left"><button id="loginButton" data-toggle="modal" data-target="#exampleModalLogin" class="btn btn-block btn-sm"><i class="fa fa-login"></i> Login</button></p></div>';
+            }
 
-			$('#carousel').flexslider({
-				animation: "slide",
-				controlNav: false,
-				animationLoop: false,
-				slideshow: false,
-				itemWidth: 135,
-				itemMargin: 5,
-				asNavFor: '#slider'
-			});
+            $('#carousel').flexslider({
+            	animation: "slide",
+            	controlNav: false,
+            	animationLoop: false,
+            	slideshow: false,
+            	itemWidth: 135,
+            	itemMargin: 5,
+            	asNavFor: '#slider'
+            });
 
-			$('#slider').flexslider({
-				animation: "slide",
-				controlNav: false,
-				animationLoop: false,
-				slideshow: false,
-				sync: "#carousel",
-				start: function (slider) {
-					$('body').removeClass('loading');
-				}
-			});
-		});
-	</script>
+            $('#slider').flexslider({
+            	animation: "slide",
+            	controlNav: false,
+            	animationLoop: false,
+            	slideshow: false,
+            	sync: "#carousel",
+            	start: function(slider) {
+            		$('body').removeClass('loading');
+            	}
+            });
+        });
+    </script>
 </body>
 <script src="/js/easyResponsiveTabs.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function () {
+	$(document).ready(function() {
 		$('.img-zoom-container').mouseover(
-			function () {
+			function() {
 				$('#myresult').css('visibility', 'visible');
 				$('#zoomResult').css('visibility', 'visible');
 				$('.img-zoom-lens').css('visibility', 'visible');
@@ -2264,7 +2239,7 @@ jQuery(document).ready(function ($) {
 			)
 
 		$('.img-zoom-container').mouseout(
-			function () {
+			function() {
 				$('#myresult').css('visibility', 'hidden');
 				$('#zoomResult').css('visibility', 'hidden');
 				$('.img-zoom-lens').css('visibility', 'hidden');
