@@ -118,11 +118,13 @@ cg-main .sub-item-cont li {
    color: #1686cc;
  }
  a {
-   color: #06c;
+   /*color: #06c;*/
+     color: #009345;
  }
 
  a {
-  color: #06c;
+  /*color: #06c;*/
+     color: #009345;
   text-decoration: none;
 }
 

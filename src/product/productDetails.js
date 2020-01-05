@@ -775,7 +775,8 @@ class ProductDetails extends Component {
                 <input type="hidden" name="add" value="1" />
                 <input type="hidden" name="w3ls_item" value="Smart Phone" />
                 <input type="hidden" name="amount" value="450.00" />
-                {!localStorage.customer_id ? (
+
+                {/*{!localStorage.customer_id ? (
                     <button
                         type="button"
                         onClick={this.addCartLocal('buy_now')}
@@ -793,7 +794,8 @@ class ProductDetails extends Component {
                     >
                       Buy Now
                     </button>
-                )}
+                )}*/}
+
                 {!localStorage.customer_id ? (
                   <button
                     type="button"

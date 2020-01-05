@@ -1007,7 +1007,7 @@ app.post("/api/add_cart_direct", async (req, res) => {
       "'"
   );
   if (checkIfExist.length > 0) {
-    const updateProductTemp = await query(
+    await query(
       "UPDATE temp_sell SET quantity= quantity+1 WHERE customer_id = '" +
         req.body.customerId +
         "' and item_ids='" +
@@ -1015,7 +1015,7 @@ app.post("/api/add_cart_direct", async (req, res) => {
         "'"
     );
   } else {
-    const insertProductsTemp = await query(
+    await query(
       "INSERT INTO temp_sell (customer_id, item_ids,quantity) VALUES ('" +
         req.body.customerId +
         "', '" +

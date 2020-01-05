@@ -16,7 +16,8 @@ class Vendor extends Component {
       VendorCover: "",
       VendorCategories: [],
       CategoryIds: [],
-      ClickedCategory: 0
+      ClickedCategory: 0,
+      ProductJSX: []
     };
     this.handleClick = this.handleClick.bind(this);
     // this.addToCart = this.addToCart.bind(this);
