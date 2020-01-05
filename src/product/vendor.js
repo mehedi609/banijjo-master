@@ -182,14 +182,14 @@ class Vendor extends Component {
                 );
                 let IterationArr = RevisedArr[key];
                 for (var i = 0; i < IterationArr.length; i++) {
-                  if (Object.keys(RevisedArr).length != 1 && i == 8) {
+                  if (Object.keys(RevisedArr).length !== 1 && i === 8) {
                     break;
                   }
                   ProductJSX.push(
                     <div className="col-md-3 col-sm-6">
                       <div className="product-grid7">
                         <div className="product-image7">
-                          <a href="#">
+                          <a href={"/productDetails/" + IterationArr[i].id}>
                             <div
                               className="frameProductImg"
                               style={{ borderBottom: "1px solid #ddd" }}
