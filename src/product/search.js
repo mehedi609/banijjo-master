@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Footer from "../include/footer";
 import Breadcums from "../include/breadcums";
-import Categories from "../include/categories_mehedi_05_01_2020";
+import Categories from "../include/categories";
 const base = process.env.REACT_APP_FRONTEND_SERVER_URL;
 const fileUrl = process.env.REACT_APP_FILE_URL;
 class Search extends Component {
