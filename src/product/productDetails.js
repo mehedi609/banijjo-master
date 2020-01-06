@@ -314,7 +314,7 @@ class ProductDetails extends Component {
     return spcArray;
   }
 
-  addCartLocal = (data) => (e) => {
+  addCartLocal = data => e => {
     let cartArr = [
       { productId: this.state.productId, quantity: this.state.productQuantity }
     ];
@@ -331,15 +331,14 @@ class ProductDetails extends Component {
       localStorage.setItem("cart", JSON.stringify(cartArr));
     }
 
-    if (data === 'buy_now')
-      window.location = '/cart';
-    else if (data === 'add_to_cart') {
+    if (data === "buy_now") window.location = "/cart";
+    else if (data === "add_to_cart") {
       var link = document.getElementById("successCartMessage");
       link.click();
     }
-  }
+  };
 
-  addCartDirect = (data) => (e) => {
+  addCartDirect = data => e => {
     fetch(base + "/api/add_cart_direct", {
       method: "POST",
       headers: {
@@ -352,20 +351,19 @@ class ProductDetails extends Component {
         quantity: this.state.productQuantity
       })
     })
-        .then(res => {
-          return res.json();
-        })
-        .then(response => {
-          if (response.data === true) {
-            if (data === 'buy_now')
-              window.location = '/cart';
-            else if (data === 'add_to_cart') {
-              var link = document.getElementById("successCartMessage");
-              link.click();
-            }
+      .then(res => {
+        return res.json();
+      })
+      .then(response => {
+        if (response.data === true) {
+          if (data === "buy_now") window.location = "/cart";
+          else if (data === "add_to_cart") {
+            var link = document.getElementById("successCartMessage");
+            link.click();
           }
-        });
-  }
+        }
+      });
+  };
 
   addWishLocal() {
     let wishArr = [
@@ -799,7 +797,7 @@ class ProductDetails extends Component {
                 {!localStorage.customer_id ? (
                   <button
                     type="button"
-                    onClick={this.addCartLocal('add_to_cart')}
+                    onClick={this.addCartLocal("add_to_cart")}
                     style={{ backgroundColor: "009345", marginRight: "10px" }}
                     className="w3ls-cart"
                   >
@@ -808,7 +806,7 @@ class ProductDetails extends Component {
                 ) : (
                   <button
                     type="button"
-                    onClick={this.addCartDirect('add_to_cart')}
+                    onClick={this.addCartDirect("add_to_cart")}
                     style={{ backgroundColor: "009345", marginRight: "10px" }}
                     className="w3ls-cart"
                   >
