@@ -1,41 +1,45 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mysql = require('mysql');
-var cors = require('cors')
+const express = require("express");
+const bodyParser = require("body-parser");
+const mysql = require("mysql");
+var cors = require("cors");
 const app = express();
-const util = require('util');
+const util = require("util");
 const fetch = require("node-fetch");
 
-app.use(cors())
+app.use(cors());
 app.use(function(req, res, next) {
- res.setHeader('Access-Control-Allow-Credentials', true);
- res.setHeader('Access-Control-Allow-Origin', '*');
- res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
- res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
- next();
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
 });
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const dbConnection = mysql.createConnection ({
-  host: 'localhost',
-  user: 'microfin_ecom',
-  password: 'sikder!@#',
-  database: 'microfin_ecommerce'
+const dbConnection = mysql.createConnection({
+  host: "localhost",
+  user: "microfin_ecom",
+  password: "sikder!@#",
+  database: "microfin_ecommerce"
 });
 const query = util.promisify(dbConnection.query).bind(dbConnection);
-dbConnection.connect((err) => {
+dbConnection.connect(err => {
   if (err) {
     throw err;
   }
-  console.log('Connected to database');
+  console.log("Connected to database");
 });
 
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 
 app.get("/api/categories", (req, res) => {
   dbConnection.query("SELECT * FROM category", function(
@@ -250,6 +254,28 @@ app.get("/api/all_product_list", async function(req, res, next) {
     data: resultArray,
     message: "all Product list."
   });
+});
+
+app.get("/api/getDiscountByProductId/:product_id", async (req, res) => {
+  try {
+    let discountAmount = 0;
+    const { product_id } = req.params;
+    const discountArr = await query(
+      `select product_id from discount where softDel=0 and status='active' and curdate() between effective_from and effective_to`
+    );
+
+    for (const item of discountArr) {
+      const itemArr = JSON.parse(item["product_id"]);
+      itemArr.forEach(({ id, discount }) => {
+        if (id === product_id) discountAmount += parseInt(discount);
+      });
+    }
+
+    res.json({ discountAmount });
+  } catch (e) {
+    console.error(e.message);
+    res.send("Server Error");
+  }
 });
 
 app.post("/api/productDetails", async (req, res) => {
@@ -1485,5 +1511,5 @@ app.post("/api/saveCategory", (req, res) => {
 });
 
 app.listen(3001, () =>
-  console.log('Express server is running on localhost:3001')
-  );
+  console.log("Express server is running on localhost:3001")
+);

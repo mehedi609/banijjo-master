@@ -6,7 +6,7 @@
         width: 100%;
         margin-bottom: 30px;
     }
-    .sp-vertical-megamenu
+    .sp-vertical-megamenu#sp_vertical_megamenu
     {
         background: #fff;
         min-height: 450px;
@@ -364,7 +364,7 @@
         height: auto !important;
         min-height: 10px;
         /*margin-bottom: 20px;*/
-        margin-bottom: 2px;
+        margin-bottom: 10px;
     }
     .spvmm_menu_child
     {

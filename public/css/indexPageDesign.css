@@ -213,7 +213,7 @@ ul {
 	}
 
 	.moreCatDiv {
-		border-bottom: 1px solid #ddd;
+		/*border-bottom: 1px solid #ddd;*/
 		height: 100px;
 		display: table;
 		width: 100%;
@@ -474,7 +474,7 @@ ul {
 			}
 
 			.moreCatDiv {
-				border-bottom: 1px solid #ddd;
+				/*border-bottom: 1px solid #ddd;*/
 				height: 100px;
 				display: table;
 				width: 100%;
@@ -722,7 +722,7 @@ ul {
 				}
 
 				.moreCatDiv {
-					border-bottom: 1px solid #ddd;
+					/*border-bottom: 1px solid #ddd;*/
 					height: 100px;
 					display: table;
 					width: 100%;
@@ -973,7 +973,7 @@ ul {
 					}
 
 					.moreCatDiv {
-						border-bottom: 1px solid #ddd;
+						/*border-bottom: 1px solid #ddd;*/
 						height: 100px;
 						display: table;
 						width: 100%;
