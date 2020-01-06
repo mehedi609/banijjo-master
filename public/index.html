@@ -62,88 +62,88 @@
 
 	function isMobile() {
 		if (navigator.userAgent.match(/Android/i) ||
-				navigator.userAgent.match(/webOS/i) ||
-				navigator.userAgent.match(/iPad/i) ||
-				navigator.userAgent.match(/iPhone/i) ||
-				navigator.userAgent.match(/iPod/i)
-		) {
+			navigator.userAgent.match(/webOS/i) ||
+			navigator.userAgent.match(/iPad/i) ||
+			navigator.userAgent.match(/iPhone/i) ||
+			navigator.userAgent.match(/iPod/i)
+			) {
 			return true;
-		}
 	}
+}
 
-	jQuery(document).ready(function($) {
-		(function(element) {
-			var el = $(element),
-					vf_megamenu = $('.vf-megamenu', el),
-					level1 = $('.vf-megamenu >.spvmm-havechild', el),
-					_li = $('.spvmm-havechild', el),
-					vf_button = $('.vf-button', el),
-					nb_hiden = 10;
-			if (level1.length && level1.length > nb_hiden) {
-				for (var i = 0; i < level1.length; i++) {
-					if (i > (nb_hiden - 1)) {
-						level1.eq(i).addClass('cat-visible');
-						level1.eq(i).hide();
-					}
+jQuery(document).ready(function($) {
+	(function(element) {
+		var el = $(element),
+		vf_megamenu = $('.vf-megamenu', el),
+		level1 = $('.vf-megamenu >.spvmm-havechild', el),
+		_li = $('.spvmm-havechild', el),
+		vf_button = $('.vf-button', el),
+		nb_hiden = 10;
+		if (level1.length && level1.length > nb_hiden) {
+			for (var i = 0; i < level1.length; i++) {
+				if (i > (nb_hiden - 1)) {
+					level1.eq(i).addClass('cat-visible');
+					level1.eq(i).hide();
 				}
-				vf_megamenu.append('<li class="more-wrap"><span class="more-view"><i class="fa fa-plus-square-o"></i>More Categories</span></li>');
-				$('.more-view', vf_megamenu).on('click touchstart', function() {
-					if (level1.hasClass('cat-visible')) {
-						vf_megamenu.find('.cat-visible').removeClass('cat-visible').addClass('cat-hidden').stop().slideDown(400);
-						$(this).html('<i class="fa fa-minus-square-o"></i>Close Categories');
-					} else if (level1.hasClass('cat-hidden')) {
-						vf_megamenu.find('.cat-hidden').removeClass('cat-hidden').addClass('cat-visible').stop().slideUp(200);
-						$(this).html('<i class="fa fa-plus-square-o"></i>More Categories');
-					}
-				});
 			}
+			vf_megamenu.append('<li class="more-wrap"><span class="more-view"><i class="fa fa-plus-square-o"></i>More Categories</span></li>');
+			$('.more-view', vf_megamenu).on('click touchstart', function() {
+				if (level1.hasClass('cat-visible')) {
+					vf_megamenu.find('.cat-visible').removeClass('cat-visible').addClass('cat-hidden').stop().slideDown(400);
+					$(this).html('<i class="fa fa-minus-square-o"></i>Close Categories');
+				} else if (level1.hasClass('cat-hidden')) {
+					vf_megamenu.find('.cat-hidden').removeClass('cat-hidden').addClass('cat-visible').stop().slideUp(200);
+					$(this).html('<i class="fa fa-plus-square-o"></i>More Categories');
+				}
+			});
+		}
 
-			function _vfResponsiveMegaMenu() {
-				if ($(window).width() <= 767) {
-					vf_megamenu.hide();
-					$('.cat-title', el).on('click', function() {
-						$(this).toggleClass('active').parent().find('ul.vf-megamenu').stop().slideToggle('medium');
-						return false;
+		function _vfResponsiveMegaMenu() {
+			if ($(window).width() <= 767) {
+				vf_megamenu.hide();
+				$('.cat-title', el).on('click', function() {
+					$(this).toggleClass('active').parent().find('ul.vf-megamenu').stop().slideToggle('medium');
+					return false;
+				});
+				_li.addClass('vf-close');
+				_li.children('div').css('display', 'none');
+				if (vf_button.length) {
+					vf_button.on('click', function() {
+						var _this = $(this),
+						li = _this.parent(),
+						ul = li.children('ul');
+						var _div = li.children('div');
+						if (li.hasClass('vf-close')) {
+							li.removeClass('vf-close').addClass('vf-open');
+							_div.stop(false, true).slideDown(500);
+							_this.removeClass('icon-close').addClass('icon-open');
+						} else {
+							li.removeClass('vf-open').addClass('vf-close');
+							_div.stop(false, true).slideUp(200);
+							_this.removeClass('icon-open').addClass('icon-close');
+						}
+						return;
 					});
-					_li.addClass('vf-close');
-					_li.children('div').css('display', 'none');
-					if (vf_button.length) {
-						vf_button.on('click', function() {
-							var _this = $(this),
-									li = _this.parent(),
-									ul = li.children('ul');
-							var _div = li.children('div');
-							if (li.hasClass('vf-close')) {
-								li.removeClass('vf-close').addClass('vf-open');
-								_div.stop(false, true).slideDown(500);
-								_this.removeClass('icon-close').addClass('icon-open');
-							} else {
-								li.removeClass('vf-open').addClass('vf-close');
-								_div.stop(false, true).slideUp(200);
-								_this.removeClass('icon-open').addClass('icon-close');
-							}
-							return;
-						});
-					}
-				} else {
-					$('.cat-title', el).unbind('click');
-					vf_button.unbind('click');
-					$('.cat-title', el).removeClass('active');
-					vf_megamenu.removeAttr('style');
-					_li.addClass('vf-close');
-					_li.children('div').removeAttr('style');
-					vf_button.removeClass('icon-open').addClass('icon-close');
 				}
+			} else {
+				$('.cat-title', el).unbind('click');
+				vf_button.unbind('click');
+				$('.cat-title', el).removeClass('active');
+				vf_megamenu.removeAttr('style');
+				_li.addClass('vf-close');
+				_li.children('div').removeAttr('style');
+				vf_button.removeClass('icon-open').addClass('icon-close');
 			}
-			_vfResponsiveMegaMenu();
+		}
+		_vfResponsiveMegaMenu();
 
-			if (isMobile()) {} else {
-				$(window).on('resize', function() {
-					_vfResponsiveMegaMenu();
-				});
-			}
-		})('#sp_vertical_megamenu');
-	});
+		if (isMobile()) {} else {
+			$(window).on('resize', function() {
+				_vfResponsiveMegaMenu();
+			});
+		}
+	})('#sp_vertical_megamenu');
+});
 </script>
 
 <script type="text/javascript">
@@ -203,7 +203,7 @@
 
 		function getCursorPos(e) {
 			var a, x = 0,
-					y = 0;
+			y = 0;
 			e = e || window.event;
 			/*get the x and y positions of the image:*/
 			a = img.getBoundingClientRect();
@@ -291,59 +291,157 @@
 
 
 <body>
-<div class="top-bar">
+	<div class="top-bar">
+		<div class="row">
+			<div class="top-bar-left">
+			</div>
+			<div class="top-bar-right">
+				<ul class="menu">
+					<li>
+					</li>
+					<li>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
 	<div class="row">
-		<div class="top-bar-left">
+		<div class="columns small-4 large-4">
+
+			<p style="text-align: left">
+				<a href="http://banijjo.com.bd"><img src="../image/banijjoLogo.png" class="imglogo" alt="company logo"></a>
+			</p>
 		</div>
-		<div class="top-bar-right">
-			<ul class="menu">
-				<li>
-				</li>
-				<li>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
 
-<div class="row">
-	<div class="columns small-4 large-4">
+		<div class="columns small-8 large-4">
+			<div class="columns small-2 large-4">
+				<ul class="dropdown hotLineIcon" data-dropdown-menu style="font-size: 16px;">
 
-		<p style="text-align: left">
-			<a href="http://banijjo.com.bd"><img src="../image/banijjoLogo.png" class="imglogo" alt="company logo"></a>
-		</p>
-	</div>
-
-	<div class="columns small-8 large-4">
-		<div class="columns small-2 large-4">
-			<ul class="dropdown hotLineIcon" data-dropdown-menu style="font-size: 16px;">
-
-				<li class="has-submenu">
-					<a href="#"><i class="fa fa-phone" style="font-size:14px;color:#ec1624;margin-top:30px;
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-phone" style="font-size:14px;color:#ec1624;margin-top:30px;
 						padding-left: 25px;"></i></a>
-					<ul class="dropdown-menu">
+						<ul class="dropdown-menu">
 
-						<li><a href="#" style="color:#ec1624">09677-222 222</a></li>
+							<li><a href="#" style="color:#009345;font-weight:bold;">09677-222 222</a></li>
 
-					</ul>
+						</ul>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+			<div class="columns small-2 large-4" style="margin-top:30px;">
+				<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-user-o" style="color:#009345;font-size: 16px;padding-left: 25px"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<div class="navbar-login">
+									<div class="row">
+										<div class="col-lg-12">
+											<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
+											Banijjo!</strong></p>
+											<div class="customerDiv">
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li><a href="#">My Orders</a></li>
+							<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
+							<li><a href="#">Wish List</a></li>
+							<li><a href="#">My Favorite Stores</a></li>
+							<li><a href="#">My Coupons</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+			<div class="columns small-3 large-4" style="margin-top:27px;padding-left: 37px">
+
+				<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 16px;">
+
+					<li class="has-submenu">
+						<a href="#"><i class="fa fa-bars" style="color: #009345;padding-left: 10px;"></i></a>
+						<ul class="dropdown-menu">
+
+							<li><a href="http://admin.banijjo.com.bd/">Seller Center</a></li>
+							<li><a href="#">Help<span class="unread-message-count"></span></a></li>
+							<li><a href="#">Buyer Protection</a></li>
+							<li><a href="#">Wish List</a></li>
+						</ul>
+
+					</li>
+
+				</ul>
+
+
+			</div>
+			<div class="columns small-5 large-4" style="margin-top:27px;padding-left: 34px">
+				<div class="cartIcon" id="cartID">
+
+				</div>
+			</div>
+
+
+			<ul class="dropdown menu" data-dropdown-menu style="font-size: 11px; height: 31px !important; top: -12px !important;width:885px;float: right;">
+				<li class="has-submenu">
+					<a href="#"><i class="fa fa-phone" style="font-size:14px;color:#009345;font-weight: bold;"> 09677-222 222</i></a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#">&nbsp;</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#">&nbsp;</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#"> &nbsp;</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#"> &nbsp;</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#"> &nbsp;</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#"> &nbsp;</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="http://admin.banijjo.com.bd/">Seller Center |</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#">Help |</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#">Buyer Protection |</a>
 
 				</li>
 
-			</ul>
-
-		</div>
-
-		<div class="columns small-2 large-4" style="margin-top:30px;">
-			<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">
 				<li class="has-submenu">
-					<a href="#"><i class="fa fa-user-o" style="color:#009345;font-size: 16px;padding-left: 25px"></i></a>
+					<a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Wish List |</a>
+
+				</li>
+				<li class="has-submenu">
+					<a href="#"><i class="fa fa-user-o" aria-hidden="true"></i> Account |</a>
 					<ul class="dropdown-menu">
 						<li>
 							<div class="navbar-login">
 								<div class="row">
 									<div class="col-lg-12">
 										<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
-											Banijjo!</strong></p>
+										Banijjo!</strong></p>
 										<div class="customerDiv">
 										</div>
 									</div>
@@ -357,255 +455,157 @@
 						<li><a href="#">My Coupons</a></li>
 					</ul>
 				</li>
-			</ul>
-		</div>
-
-		<div class="columns small-3 large-4" style="margin-top:27px;padding-left: 37px">
-
-			<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 16px;">
-
 				<li class="has-submenu">
-					<a href="#"><i class="fa fa-bars" style="color: #009345;padding-left: 10px;"></i></a>
-					<ul class="dropdown-menu">
-
-						<li><a href="http://admin.banijjo.com.bd/">Seller Center</a></li>
-						<li><a href="#">Help<span class="unread-message-count"></span></a></li>
-						<li><a href="#">Buyer Protection</a></li>
-						<li><a href="#">Wish List</a></li>
-					</ul>
-
+					<a href="#"><img src="/image/bd_small.png" alt="company logo"></a>
 				</li>
-
 			</ul>
-
-
 		</div>
-		<div class="columns small-5 large-4" style="margin-top:27px;padding-left: 34px">
-			<div class="cartIcon" id="cartID">
+	</div>
+	<br>
 
-			</div>
-		</div>
+	<!-- Modal register and login -->
 
-
-		<ul class="dropdown menu" data-dropdown-menu style="font-size: 11px; height: 31px !important; top: -12px !important;width:885px;float: right;">
-			<li class="has-submenu">
-				<a href="#"><i class="fa fa-phone" style="font-size:14px;color:#ec1624"> 09677-222 222</i></a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#">&nbsp;</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#">&nbsp;</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#"> &nbsp;</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#"> &nbsp;</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#"> &nbsp;</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#"> &nbsp;</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="http://admin.banijjo.com.bd/">Seller Center |</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#">Help |</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#">Buyer Protection |</a>
-
-			</li>
-
-			<li class="has-submenu">
-				<a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Wish List |</a>
-
-			</li>
-			<li class="has-submenu">
-				<a href="#"><i class="fa fa-user-o" aria-hidden="true"></i> Account |</a>
-				<ul class="dropdown-menu">
-					<li>
-						<div class="navbar-login">
-							<div class="row">
-								<div class="col-lg-12">
-									<p class="text-left" style="padding-left: 10px;"><strong>Welcome to
-										Banijjo!</strong></p>
-									<div class="customerDiv">
-									</div>
+	<div class="modal" id="exampleModalRegister" tabindex="-1" role="dialog">
+		<div class="modal-dialog regLoginModal" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="border-bottom: none;">
+					<h5 align="center"><img src="/image/banijjoModalLogo.png" alt="company logo"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<ul class="nav nav-tabs">
+					<li class="active" style="padding-left: 80px"><a data-toggle="tab" href="#home">REGISTER</a></li>
+					<li style="padding-left: 30px"><a data-toggle="tab" href="#menu1">LOGIN</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="home" class="tab-pane fade in active">
+						<form class="form-signin">
+							<div class="modal-body">
+								<div class="form-label-group">
+									<input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Email address" required autofocus>
+								</div>
+								<div class="form-label-group">
+									<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
 								</div>
 							</div>
-						</div>
-					</li>
-					<li><a href="#">My Orders</a></li>
-					<li><a href="#">Message Center<span class="unread-message-count"></span></a></li>
-					<li><a href="#">Wish List</a></li>
-					<li><a href="#">My Favorite Stores</a></li>
-					<li><a href="#">My Coupons</a></li>
-				</ul>
-			</li>
-			<li class="has-submenu">
-				<a href="#"><img src="/image/bd_small.png" alt="company logo"></a>
-			</li>
-		</ul>
-	</div>
-</div>
-<br>
-
-<!-- Modal register and login -->
-
-<div class="modal" id="exampleModalRegister" tabindex="-1" role="dialog">
-	<div class="modal-dialog regLoginModal" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="border-bottom: none;">
-				<h5 align="center"><img src="/image/banijjoModalLogo.png" alt="company logo"></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;">
-					<span aria-hidden="true">×</span>
-				</button>
-			</div>
-			<ul class="nav nav-tabs">
-				<li class="active" style="padding-left: 80px"><a data-toggle="tab" href="#home">REGISTER</a></li>
-				<li style="padding-left: 30px"><a data-toggle="tab" href="#menu1">LOGIN</a></li>
-			</ul>
-			<div class="tab-content">
-				<div id="home" class="tab-pane fade in active">
-					<form class="form-signin">
-						<div class="modal-body">
-							<div class="form-label-group">
-								<input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Email address" required autofocus>
-							</div>
-							<div class="form-label-group">
-								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #009345;border-color:#009345">Create
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #009345;border-color:#009345">Create
 								Account</button>
-							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
-							<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
-								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
-								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
-							</p>
+								<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+								<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+								</p>
 
-						</div>
-					</form>
-				</div>
-				<div id="menu1" class="tab-pane fade">
-					<form class="form-signin">
-						<div class="modal-body">
-							<div class="form-label-group">
-								<input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Email address" required autofocus>
 							</div>
-							<div class="form-label-group">
-								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #009345;border-color:#009345">LOGIN</button>
-							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
-							<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
-								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
-								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
-							</p>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="modal" id="exampleModalLogin" tabindex="-1" role="dialog">
-	<div class="modal-dialog regLoginModal" role="document">
-		<div class="modal-content" style="align-content: center;">
-			<div class="modal-header" style="border-bottom: none;">
-				<h5 align="center"><img src="/image/banijjoModalLogo.png" alt="company logo"></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;">
-					<span aria-hidden="true">×</span>
-				</button>
-			</div>
-			<ul class="nav nav-tabs">
-				<li style="padding-left: 80px"><a data-toggle="tab" href="#home2">REGISTER</a></li>
-				<li class="active" style="padding-left: 30px"><a data-toggle="tab" href="#menu2">LOGIN</a></li>
-			</ul>
-			<div class="tab-content">
-				<div id="home2" class="tab-pane fade">
-					<form class="form-signin">
-						<div class="modal-body">
-							<div class="form-label-group">
-								<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-							</div>
-							<div class="form-label-group">
-								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #009345;border-color:#009345">Create
-								Account</button>
-							<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
-							<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
-								<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
-								<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
-							</p>
-						</div>
-					</form>
-				</div>
-				<div id="menu2" class="tab-pane fade in active">
-					<div class="modal-body">
+						</form>
+					</div>
+					<div id="menu1" class="tab-pane fade">
 						<form class="form-signin">
-							<div class="form-label-group">
-								<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+							<div class="modal-body">
+								<div class="form-label-group">
+									<input type="email" id="inputEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Email address" required autofocus>
+								</div>
+								<div class="form-label-group">
+									<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+								</div>
 							</div>
-							<div class="form-label-group">
-								<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #009345;border-color:#009345">LOGIN</button>
+								<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+								<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+								</p>
 							</div>
+						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #009345;border-color:#009345">Login</button>
-						<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
-						<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
-							<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
-							<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
-						</p>
-					</div>
-					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
 
-<div id="root">
+	<div class="modal" id="exampleModalLogin" tabindex="-1" role="dialog">
+		<div class="modal-dialog regLoginModal" role="document">
+			<div class="modal-content" style="align-content: center;">
+				<div class="modal-header" style="border-bottom: none;">
+					<h5 align="center"><img src="/image/banijjoModalLogo.png" alt="company logo"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<ul class="nav nav-tabs">
+					<li style="padding-left: 80px"><a data-toggle="tab" href="#home2">REGISTER</a></li>
+					<li class="active" style="padding-left: 30px"><a data-toggle="tab" href="#menu2">LOGIN</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="home2" class="tab-pane fade">
+						<form class="form-signin">
+							<div class="modal-body">
+								<div class="form-label-group">
+									<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+								</div>
+								<div class="form-label-group">
+									<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-danger registerSubmit" style="background-color: #009345;border-color:#009345">Create
+								Account</button>
+								<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+								<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+								</p>
+							</div>
+						</form>
+					</div>
+					<div id="menu2" class="tab-pane fade in active">
+						<div class="modal-body">
+							<form class="form-signin">
+								<div class="form-label-group">
+									<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+								</div>
+								<div class="form-label-group">
+									<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-danger loginSubmit" style="background-color: #009345;border-color:#009345">Login</button>
+								<p><a href="#" target="_blank" class="" style="color:#ec1c24">Forgot Password?</a></p>
+								<p style="text-align: center;"><a href="https://www.facebook.com/banijjo/" style="color:#355291;"><i id="social-fb" class="fa fa-facebook-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#2AA9E0;"></a><i id="social-tw" class="fa fa-twitter-square fa-3x socialFooter"></i></a>
+									<a href="https://twitter.com/bootsnipp" style="color:#0077B5;"><i id="social-tw" class="fa fa-linkedin-square fa-3x socialFooter"></i></a>
+								</p>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-</div>
 
-<script src="/js/jquery.magnific-popup.js"></script>
-<script src="/js/vendor/what-input.js"></script>
-<script src="/js/vendor/foundation.js"></script>
-<script src="/js/app.js"></script>
-<script defer src="/js/jquery.flexslider.js"></script>
-<link rel="stylesheet" href="/css/flexslider.css" type="text/css" media="screen" />
+	<div id="root">
 
-<script type="text/javascript">
-	function logout() {
-		localStorage.setItem('customer_id', '');
-		window.location.href = "/";
-	}
+	</div>
 
-	$(window).load(function() {
+	<script src="/js/jquery.magnific-popup.js"></script>
+	<script src="/js/vendor/what-input.js"></script>
+	<script src="/js/vendor/foundation.js"></script>
+	<script src="/js/app.js"></script>
+	<script defer src="/js/jquery.flexslider.js"></script>
+	<link rel="stylesheet" href="/css/flexslider.css" type="text/css" media="screen" />
+
+	<script type="text/javascript">
+		function logout() {
+			localStorage.setItem('customer_id', '');
+			window.location.href = "/";
+		}
+
+		$(window).load(function() {
 		// there are 2 customerDiv classes.
 		document.getElementsByClassName("customerDiv")[0].innerHTML = '';
 		document.getElementsByClassName("customerDiv")[1].innerHTML = '';
@@ -646,20 +646,20 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.img-zoom-container').mouseover(
-				function() {
-					$('#myresult').css('visibility', 'visible');
-					$('#zoomResult').css('visibility', 'visible');
-					$('.img-zoom-lens').css('visibility', 'visible');
-				}
-		)
+			function() {
+				$('#myresult').css('visibility', 'visible');
+				$('#zoomResult').css('visibility', 'visible');
+				$('.img-zoom-lens').css('visibility', 'visible');
+			}
+			)
 
 		$('.img-zoom-container').mouseout(
-				function() {
-					$('#myresult').css('visibility', 'hidden');
-					$('#zoomResult').css('visibility', 'hidden');
-					$('.img-zoom-lens').css('visibility', 'hidden');
-				}
-		)
+			function() {
+				$('#myresult').css('visibility', 'hidden');
+				$('#zoomResult').css('visibility', 'hidden');
+				$('.img-zoom-lens').css('visibility', 'hidden');
+			}
+			)
 
 		$('#horizontalTab1').easyResponsiveTabs({
 			type: 'default',
