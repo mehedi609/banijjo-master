@@ -386,6 +386,38 @@ ul {
 				display: none;
 			}
 
+			.frameSliderBig {
+				/* height: 274px;*/
+				height: auto;
+				display: table;
+				width: 100%;
+				text-align: center;
+				padding: 0px;
+				overflow: hidden;
+			}
+			.helperSliderBig {
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
+				height: auto;
+				background: #ffffff;
+			}
+			.leftMobileCarosel{
+				display: block;
+			}
+			.rightMobileCarosel{
+				display: block;
+			}
+			.leftDesCarosel
+			{
+				display: none;
+			}
+			.rightDesCarosel
+			{
+				display: none;
+			}
+
+
 		}
 
 
@@ -600,6 +632,39 @@ ul {
 				.p-2 {
 					display: none;
 				}
+
+				.frameSliderBig {
+					/* height: 274px;*/
+					height: auto;
+					display: table;
+					width: 100%;
+					text-align: center;
+					padding: 0px;
+					overflow: hidden;
+				}
+				.helperSliderBig {
+					display: table-cell;
+					text-align: center;
+					vertical-align: middle;
+					height: auto;
+					background: #ffffff;
+				}
+				.leftMobileCarosel{
+					display: block;
+				}
+				.rightMobileCarosel{
+					display: block;
+				}
+
+				.leftDesCarosel
+				{
+					display: none;
+				}
+				.rightDesCarosel
+				{
+					display: none;
+				}
+
 
 
 			}
@@ -816,6 +881,38 @@ ul {
 					.p-2{
 						display: none;
 					}
+					.frameSliderBig {
+						/* height: 274px;*/
+						height: auto;
+						display: table;
+						width: 100%;
+						text-align: center;
+						padding: 0px;
+						overflow: hidden;
+					}
+					.helperSliderBig {
+						display: table-cell;
+						text-align: center;
+						vertical-align: middle;
+						height: auto;
+						background: #ffffff;
+					}
+					.leftMobileCarosel{
+						display: block;
+					}
+					.rightMobileCarosel{
+						display: block;
+					}
+
+					.leftDesCarosel
+					{
+						display: none;
+					}
+					.rightDesCarosel
+					{
+						display: none;
+					}
+
 
 
 
@@ -1037,6 +1134,39 @@ ul {
 							display: none;
 						}
 
+						.frameSliderBig {
+							/* height: 274px;*/
+							height: auto;
+							display: table;
+							width: 100%;
+							text-align: center;
+							padding: 0px;
+							overflow: hidden;
+						}
+						.helperSliderBig {
+							display: table-cell;
+							text-align: center;
+							vertical-align: middle;
+							height: auto;
+							background: #ffffff;
+						}
+						.leftMobileCarosel{
+							display: block;
+						}
+						.rightMobileCarosel{
+							display: block;
+						}
+
+						.leftDesCarosel
+						{
+							display: none;
+						}
+						.rightDesCarosel
+						{
+							display: none;
+						}
+
+
 
 					}
 
@@ -1211,6 +1341,21 @@ ul {
 								.regLoginModal{
 									width: 500px !important;
 								}
+								.leftMobileCarosel{
+									display: none;
+								}
+								.rightMobileCarosel{
+									display: none;
+								}
+								.leftDesCarosel
+								{
+									display: block;
+								}
+								.rightDesCarosel
+								{
+									display: block;
+								}
+
 
 							}
 
