@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Footer from "../include/footer";
 import Navbar from "../include/Navbar";
+import axios from "axios";
 import $ from "jquery";
 
 import OwlCarousel from "react-owl-carousel";
@@ -42,7 +43,8 @@ class ProductDetails extends Component {
       emailError: "",
       passwordError: "",
       cartArr: [],
-      color: ""
+      color: "",
+      discountAmount: 0
     };
 
     this.handleClickPlus = this.handleClickPlus.bind(this);
@@ -55,6 +57,16 @@ class ProductDetails extends Component {
 
   componentDidMount() {
     this.getProductDetails();
+    this.getDiscountAmount();
+  }
+
+  getDiscountAmount() {
+    axios
+      .get(`${base}/api/getDiscountByProductId/${this.state.productId}`)
+      .then(res => {
+        // console.log(res.data.discountAmount);
+        this.setState({ discountAmount: res.data.discountAmount });
+      });
   }
 
   getProductDetails() {
@@ -765,34 +777,24 @@ class ProductDetails extends Component {
 
             <div className="simpleCart_shelfItem">
               <p>
-                <span>৳{this.state.productPrice}</span>{" "}
-                <i className="item_price">৳{this.state.productPrice}</i>
+                {this.state.discountAmount === 0 ? (
+                  <Fragment>
+                    <i className="item_price">৳{this.state.productPrice}</i>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <span>৳{this.state.productPrice}</span>{" "}
+                    <i className="item_price">
+                      ৳{this.state.productPrice - this.state.discountAmount}
+                    </i>
+                  </Fragment>
+                )}
               </p>
               <form action="#" method="post">
                 <input type="hidden" name="cmd" value="_cart" />
                 <input type="hidden" name="add" value="1" />
                 <input type="hidden" name="w3ls_item" value="Smart Phone" />
                 <input type="hidden" name="amount" value="450.00" />
-
-                {/*{!localStorage.customer_id ? (
-                    <button
-                        type="button"
-                        onClick={this.addCartLocal('buy_now')}
-                        style={{ backgroundColor: "009345", marginRight: "10px" }}
-                        className="w3ls-cart"
-                    >
-                      Buy Now
-                    </button>
-                ) : (
-                    <button
-                        type="button"
-                        onClick={this.addCartDirect('buy_now')}
-                        style={{ backgroundColor: "009345", marginRight: "10px" }}
-                        className="w3ls-cart"
-                    >
-                      Buy Now
-                    </button>
-                )}*/}
 
                 {!localStorage.customer_id ? (
                   <button

@@ -265,6 +265,28 @@ app.get("/api/all_product_list", async function(req, res, next) {
   });
 });
 
+app.get("/api/getDiscountByProductId/:product_id", async (req, res) => {
+  try {
+    let discountAmount = 0;
+    const { product_id } = req.params;
+    const discountArr = await query(
+      `select product_id from discount where softDel=0 and status='active' and curdate() between effective_from and effective_to`
+    );
+
+    for (const item of discountArr) {
+      const itemArr = JSON.parse(item["product_id"]);
+      itemArr.forEach(({ id, discount }) => {
+        if (id === product_id) discountAmount += parseInt(discount);
+      });
+    }
+
+    res.json({ discountAmount });
+  } catch (e) {
+    console.error(e.message);
+    res.send("Server Error");
+  }
+});
+
 app.post("/api/productDetails", async (req, res) => {
   const resultArray = {};
   const specificationActualArray = [];
