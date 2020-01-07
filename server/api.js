@@ -1,15 +1,8 @@
 const express = require("express");
-const mysql = require("mysql");
 const util = require("util");
 const _ = require("lodash");
 const fetch = require("node-fetch");
-
-const dbConnection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "ecommerce"
-});
+const dbConnection = require("./db_com_bd_config");
 
 dbConnection.connect(err => {
   if (err) {
@@ -22,11 +15,16 @@ const query = util.promisify(dbConnection.query).bind(dbConnection);
 
 const router = express.Router();
 
-router.get("/categories", (req, res) => {
+/*router.get("/categories", (req, res) => {
   dbConnection.query("SELECT * FROM category", function(error, results) {
     if (error) throw error;
     return res.send({ error: false, data: results, message: "users list." });
   });
+});*/
+
+router.get("/categories", async (req, res) => {
+  const categories = await query("SELECT * FROM category");
+  return res.send({ error: false, data: categories, message: "users list." });
 });
 
 router.get("/feature_name", async (req, res) => {
@@ -1369,7 +1367,7 @@ router.post("/searchProductList", async (req, res) => {
   });
 });
 
-router.get("/search_filter_products", (req, res) => {
+/*router.get("/search_filter_products", (req, res) => {
   dbConnection.query(
     'SELECT * FROM products WHERE vendor_id = "' +
       req.query.vendorId +
@@ -1381,6 +1379,18 @@ router.get("/search_filter_products", (req, res) => {
       return res.send({ data: results, message: "data" });
     }
   );
+});*/
+
+router.get("/search_filter_products", async (req, res) => {
+  const results = await query(
+    'SELECT * FROM products WHERE vendor_id = "' +
+      req.query.vendorId +
+      '" AND category_id = "' +
+      req.query.categoryList +
+      '"'
+  );
+
+  return res.send({ data: results, message: "data" });
 });
 
 router.get("/search_purchase_products", (req, res) => {
@@ -1445,14 +1455,12 @@ router.get("/search_purchase_products", (req, res) => {
       console.log("Rejected");
       return res.send({ data: [], message: "data" });
     });
-
-  // return res.send({ success: 'true', data: req.query.id, message: 'data' });
 });
 
 router.get("/product_list", (req, res) => {
   dbConnection.query(
-    `SELECT * FROM products WHERE softDelete = 0 AND isrouterrove='authorize' AND status = 'active' limit 5`,
-    function(error, results, fields) {
+    `SELECT * FROM products WHERE softDelete = 0 AND isApprove='authorize' AND status = 'active' limit 5`,
+    function(error, results) {
       if (error) throw error;
       return res.send({
         error: error,
