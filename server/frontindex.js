@@ -1245,45 +1245,56 @@ app.post("/api/deleteCustomerWishProducts", async (req, res) => {
 });
 
 // new api
-app.post("/api/getVendorData", async (req, res) => {
-  const vendorData = await query(
-    "SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = '" +
-      req.body.vendorId +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: vendorData[0],
-    message: "Vendor Info"
-  });
+app.get("/api/getVendorData/:vendorId", async (req, res) => {
+  try {
+    const { vendorId } = req.params;
+    const vendorData = await query(
+      `SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = ${vendorId}`
+    );
+    return res.json(vendorData[0]);
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // new api
-app.post("/api/getVendorCategories", async (req, res) => {
-  const VendorCategoryData = await query(
-    "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
-      req.body.vendorId +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: VendorCategoryData,
-    message: "Vendor Info"
-  });
+app.get("/api/getVendorCategories/:vendorId", async (req, res) => {
+  try {
+    const { vendorId } = req.params;
+    const VendorCategoryData = await query(
+      "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
+        vendorId +
+        "'"
+    );
+    return res.json(VendorCategoryData);
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // new api
 app.post("/api/getVendorProductsByCategory", async (req, res) => {
-  const ProductData = await query(
-    "SELECT id,category_id,product_name,productPrice,home_image,created_date from products WHERE status='active' AND softDelete=0 AND vendor_id = '" +
-      req.body.vendorId +
-      "' AND category_id IN " +
-      "(" +
-      req.body.categoryIds +
-      ")" +
-      ""
-  );
-  return res.send({ error: false, data: ProductData, message: "CategoryData" });
+  try {
+    const { vendorId, categoryIds } = req.body;
+
+    console.log("vendorId", vendorId);
+    console.log("categoryIds", categoryIds);
+    const ProductData = await query(
+      "SELECT id,category_id,product_name,productPrice,home_image,created_date from products WHERE status='active' AND softDelete=0 AND vendor_id = '" +
+        vendorId +
+        "' AND category_id IN " +
+        "(" +
+        categoryIds +
+        ")" +
+        ""
+    );
+    return res.json({ data: ProductData });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // new api

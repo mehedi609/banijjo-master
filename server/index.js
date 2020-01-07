@@ -1253,38 +1253,6 @@ app.post("/api/deleteCustomerWishProducts", async (req, res) => {
   return res.send({ error: false, message: "Customer wish product deleted." });
 });
 
-/*// new api
-app.post("/api/getVendorData/", async (req, res) => {
-  try {
-    const { vendorId } = req.body;
-    const vendorData = await query(
-      `SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = ${vendorId}`
-    );
-    return res.send({
-      error: false,
-      data: vendorData[0],
-      message: "Vendor Info"
-    });
-  } catch (e) {
-    console.error(e.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// new api
-app.post("/api/getVendorCategories", async (req, res) => {
-  const VendorCategoryData = await query(
-    "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
-      req.body.vendorId +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: VendorCategoryData,
-    message: "Vendor Info"
-  });
-});*/
-
 // new api
 app.get("/api/getVendorData/:vendorId", async (req, res) => {
   try {
@@ -1331,7 +1299,7 @@ app.post("/api/getVendorProductsByCategory", async (req, res) => {
         ")" +
         ""
     );
-    return res.json({ data: ProductData });
+    return res.send({ data: ProductData });
   } catch (e) {
     console.error(e.message);
     res.status(500).send("Server Error");
