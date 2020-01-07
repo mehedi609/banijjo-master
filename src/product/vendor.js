@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
-
 import Breadcums from "../include/breadcums";
 import Footer from "../include/footer";
 
 const fileUrl = process.env.REACT_APP_FILE_URL;
 const base = process.env.REACT_APP_FRONTEND_SERVER_URL;
-const baseUrl = process.env.REACT_APP_FRONTEND_URL;
 
 class Vendor extends Component {
   constructor(props) {
@@ -22,20 +20,48 @@ class Vendor extends Component {
       ClickedCategory: 0
     };
     this.handleClick = this.handleClick.bind(this);
-    // this.addToCart = this.addToCart.bind(this);
     this.showAll = this.showAll.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getVendorData();
     this.getVendorCategories();
   }
 
-  getVendorCategories() {
+  config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  };
+
+  getVendorData() {
+    const body = JSON.stringify({
+      vendorId: this.state.VendorId
+    });
+
     axios
-      .get(`${base}/api/getVendorCategories/${this.state.vendorId}`)
-      .then(res => {
-        this.setState({ VendorCategories: res.data });
+      .post(`${base}/api/getVendorData`, body, this.config)
+      .then(response => {
+        const { name, logo, cover_photo } = response.data.data;
+        this.setState({
+          VendorName: name,
+          VendorLogo: logo,
+          VendorCover: cover_photo
+        });
+      })
+      .catch(e => console.log(e));
+  }
+
+  getVendorCategories() {
+    const body = JSON.stringify({
+      vendorId: this.state.VendorId
+    });
+
+    axios
+      .post(`${base}/api/getVendorCategories`, body, this.config)
+      .then(response => {
+        this.setState({ VendorCategories: response.data.data });
 
         let CategoryList = [];
         let CategoryIdArr = [];
@@ -48,16 +74,78 @@ class Vendor extends Component {
           CategoryIdArr.push(item.category_id);
           CategoryKeyValue[item.category_id] = item.category_name;
         });
-
         this.setState({
           CategoryList: CategoryList,
           CategoryIds: CategoryIdArr,
           CategoryKeyValue: CategoryKeyValue
         });
-
         this.getProducts(CategoryIdArr);
-      });
+      })
+      .catch(e => console.log(e));
   }
+
+  /*getVendorData() {
+    fetch(`${base}/api/getVendorData`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        vendorId: this.state.VendorId
+      })
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(response => {
+        if (response.data) {
+          const { name, logo, cover_photo } = response.data;
+          this.setState({
+            VendorName: name,
+            VendorLogo: logo,
+            VendorCover: cover_photo
+          });
+        }
+      });
+  }*/
+
+  /*getVendorCategories() {
+    fetch(`${base}/api/getVendorCategories`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        vendorId: this.state.VendorId
+      })
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(response => {
+        if (response.data) {
+          this.setState({ VendorCategories: response.data });
+          let CategoryList = [];
+          let CategoryIdArr = [];
+          let CategoryKeyValue = [];
+          this.state.VendorCategories.map(function(item, key) {
+            CategoryList.push(
+              <option value={item.category_id}>{item.category_name}</option>
+            );
+            CategoryIdArr.push(item.category_id);
+            CategoryKeyValue[item.category_id] = item.category_name;
+          });
+          this.setState({
+            CategoryList: CategoryList,
+            CategoryIds: CategoryIdArr,
+            CategoryKeyValue: CategoryKeyValue
+          });
+          this.getProducts(CategoryIdArr);
+        }
+      });
+  }*/
 
   handleClick(event) {
     let Cat = event.target.value;
@@ -68,17 +156,6 @@ class Vendor extends Component {
       CategoryIdArr.push(Cat);
       this.getProducts(CategoryIdArr);
     }
-  }
-
-  getVendorData() {
-    axios.get(`${base}//api/getVendorData/${this.state.vendorId}`).then(res => {
-      const { name, logo, cover_photo } = res.data;
-      this.setState({
-        VendorName: name,
-        VendorLogo: logo,
-        VendorCover: cover_photo
-      });
-    });
   }
 
   getProducts(CategoryIdArr) {
