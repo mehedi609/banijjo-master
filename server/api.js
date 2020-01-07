@@ -23,11 +23,7 @@ const query = util.promisify(dbConnection.query).bind(dbConnection);
 const router = express.Router();
 
 router.get("/categories", (req, res) => {
-  dbConnection.query("SELECT * FROM category", function(
-    error,
-    results,
-    fields
-  ) {
+  dbConnection.query("SELECT * FROM category", function(error, results) {
     if (error) throw error;
     return res.send({ error: false, data: results, message: "users list." });
   });
@@ -54,7 +50,7 @@ router.get("/feature_banner_products", async (req, res) => {
 
 const getProductInfoByCategoryId = async cat_id => {
   return await query(
-    `Select category_id,home_image from products where category_id=${cat_id} and softDelete=0 and isrouterrove='authorize' and status='active'`
+    `Select category_id,home_image from products where category_id=${cat_id} and softDelete=0 and isApprove='authorize' and status='active'`
   );
 };
 
