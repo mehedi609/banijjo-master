@@ -138,7 +138,7 @@ class ShoppingCart extends Component {
       uniqueProductIds.map(function(valParent, keyParent) {
         let totalCount = 0;
         cartData.map(function(val, key) {
-          if (valParent === val.productId) {
+          if (parseInt(valParent) === parseInt(val.productId)) {
             totalCount += val.quantity;
           }
         });
@@ -173,7 +173,7 @@ class ShoppingCart extends Component {
         uniqueProductIds.map(function(valParent, keyParent) {
           let totalCount = 0;
           cartData.map(function(val, key) {
-            if (valParent === val.productId) {
+            if (parseInt(valParent) === parseInt(val.productId)) {
               totalCount += val.quantity;
             }
           });
@@ -322,7 +322,7 @@ class ShoppingCart extends Component {
       uniqueProductIds.map(function(valParent, keyParent) {
         let totalCount = 0;
         cartData.map(function(val, key) {
-          if (valParent === val.productId) {
+          if (parseInt(valParent) === parseInt(val.productId)) {
             totalCount += val.quantity;
           }
         });
@@ -330,7 +330,7 @@ class ShoppingCart extends Component {
       });
       let newCartData = [];
       revisedCartData.map(function(val, key) {
-        if (itemId === val.productId) {
+        if (parseInt(itemId) === parseInt(val.productId)) {
           let newQty = val.quantity;
           if (type === 0) {
             if (val.quantity > 0) {
@@ -579,7 +579,7 @@ class ShoppingCart extends Component {
       uniqueProductIds.map(function(valParent, keyParent) {
         let totalCount = 0;
         cartData.map(function(val, key) {
-          if (valParent === val.productId) {
+          if (parseInt(valParent) === parseInt(val.productId)) {
             totalCount += val.quantity;
           }
         });

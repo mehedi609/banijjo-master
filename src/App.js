@@ -192,6 +192,7 @@ class App extends Component {
           } else {
             this.state.BannerImagesCustom.map((item, key) => {
               activity = key == 0 ? (activity = "active") : "";
+              console.log(item);
               coolView.push(
                 <div className={"item " + activity}>
                   <div className="row">
@@ -1028,7 +1029,7 @@ class App extends Component {
                 className="btn-sm closeButton agree"
               >
                 <i
-                  className="fa fa-times-circle"
+                  className="fa fa-remove"
                   style={{
                     fontSize: "30px",
                     color: "#EC1624",

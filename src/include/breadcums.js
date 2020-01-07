@@ -144,7 +144,7 @@ class Breadcums extends Component {
             {/*CartIcon*/}
             <div
               className="columns small-6 large-4"
-              style={{ marginTop: "12px" }}
+              style={{ marginTop: "8px", paddingLeft: "8px" }}
             >
               <div className="cartIcon">
                 <a href="/cart" style={{ color: "#009345", fontSize: "12px" }}>
@@ -154,7 +154,7 @@ class Breadcums extends Component {
                   ></i>{" "}
                   <span
                     class="badge badge-light"
-                    style={{ backgroundColor: "#ec1624", fontSize: "8px" }}
+                    style={{ backgroundColor: "#ec1624", fontSize: "13px" }}
                   >
                     {this.state.cartItemCount > 0
                       ? this.state.cartItemCount

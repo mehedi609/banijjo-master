@@ -1288,8 +1288,8 @@ ul {
 									width: 250px;
 									left: 250px;
 									top: 0px;
-									padding-left: 414px;
-									margin-top: -7px;
+									padding-left: 420px;
+									margin-top: -13px;
 								}
 
 								.frameAdsBig {
@@ -1573,7 +1573,7 @@ ul {
 
 											@media (min-width:500px) {
 												.imglogo{
-													max-width:200px;
+													max-width:205px;
 													height: auto;
 
 												}
@@ -1581,7 +1581,7 @@ ul {
 
 											@media (min-width:400px) {
 												.imglogo{
-													max-width:200px;
+													max-width:205px;
 													height: auto;
 
 												}
@@ -1590,7 +1590,7 @@ ul {
 											@media (min-width:300px) {
 												.imglogo{
 													/* max-width:70px;*/
-													max-width:120px;
+													max-width:125px;
 													height: auto;
 
 												}
@@ -1599,7 +1599,7 @@ ul {
 
 											@media (min-width:600px) {
 												.imglogo{
-													max-width:220px;
+													max-width:225px;
 													height: auto;
 
 												}
@@ -1607,7 +1607,7 @@ ul {
 
 											@media (min-width:700px) {
 												.imglogo {
-													max-width: 200px;
+													max-width: 205px;
 													height: auto;
 													position: absolute;
 													margin-left: 10px;

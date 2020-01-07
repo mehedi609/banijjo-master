@@ -161,7 +161,7 @@ class Categories extends Component {
       <React.Fragment>
         <div
           className="medium-3 large-3 columns"
-          style={{ marginTop: "-20px" }}
+          style={{ marginTop: "-13px" }}
         >
           <div
             id="sp_vertical_megamenu"
@@ -251,13 +251,16 @@ class Categories extends Component {
                 <p style={{ color: "#ec1c24" }}>No More Categories</p>
               )}
 
-              <li style={{ textAlign: "center" }} className="spvmm-nochild">
+              <li style={{ textAlign: "left" }} className="spvmm-nochild">
                 <a
                   href="/moreCategory"
                   style={{ color: "#ec1c24", textAlign: "center" }}
                   className="megamenu_a"
                 >
-                  More Category
+                  <i className="fa fa-plus-circle" style={{ color: "#009345" }}>
+                    {" "}
+                    More
+                  </i>
                 </a>
               </li>
             </ul>
