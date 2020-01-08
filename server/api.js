@@ -2,7 +2,32 @@ const express = require("express");
 const util = require("util");
 const _ = require("lodash");
 const fetch = require("node-fetch");
-const dbConnection = require("./db_com_bd_config");
+const mysql = require("mysql");
+
+// banijjo.com.bd config
+const banijjo_com_bd = {
+  host: "localhost",
+  user: "microfin_ecom",
+  password: "sikder!@#",
+  database: "microfin_ecommerce"
+};
+
+// banijjo local config
+const banijjo_local = {
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "ecommerce"
+};
+
+const { host, user, password, database } = banijjo_local;
+
+const dbConnection = mysql.createConnection({
+  host,
+  user,
+  password,
+  database
+});
 
 dbConnection.connect(err => {
   if (err) {
@@ -23,8 +48,13 @@ const router = express.Router();
 });*/
 
 router.get("/categories", async (req, res) => {
-  const categories = await query("SELECT * FROM category");
-  return res.send({ error: false, data: categories, message: "users list." });
+  try {
+    const categories = await query("SELECT * FROM category");
+    return res.send({ error: false, data: categories, message: "users list." });
+  } catch (e) {
+    console.log(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 router.get("/feature_name", async (req, res) => {
@@ -1205,17 +1235,22 @@ router.post("/getVendorData", async (req, res) => {
 // @route   POST api/getVendorCategories
 // @desc    Get vendor details
 router.post("/getVendorCategories", async (req, res) => {
-  const VendorCategoryData = await query(
-    "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
-      req.body.vendorId +
-      "'"
-  );
+  try {
+    const VendorCategoryData = await query(
+      "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
+        req.body.vendorId +
+        "'"
+    );
 
-  return res.send({
-    error: false,
-    data: VendorCategoryData,
-    message: "Vendor Info"
-  });
+    return res.send({
+      error: false,
+      data: VendorCategoryData,
+      message: "Vendor Info"
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // new api
@@ -1243,14 +1278,19 @@ router.post("/getVendorProductsByCategory", async (req, res) => {
 
 // new api
 router.get("/getAdvertisement", async (req, res) => {
-  const advertData = await query(
-    "SELECT image from advertisement WHERE status=1 AND softDel=0"
-  );
-  return res.send({
-    error: false,
-    data: advertData[0],
-    message: "Advertisement"
-  });
+  try {
+    const advertData = await query(
+      "SELECT image from advertisement WHERE status=1 AND softDel=0"
+    );
+    return res.send({
+      error: false,
+      data: advertData[0],
+      message: "Advertisement"
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 router.post("/getCustomerCartProductsCount", async (req, res) => {

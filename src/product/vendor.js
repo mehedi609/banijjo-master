@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Breadcums from "../include/breadcums";
 import Footer from "../include/footer";
 
@@ -35,7 +34,7 @@ class Vendor extends Component {
     }
   };
 
-  getVendorData() {
+  /*getVendorData() {
     const body = JSON.stringify({
       vendorId: this.state.VendorId
     });
@@ -82,9 +81,9 @@ class Vendor extends Component {
         this.getProducts(CategoryIdArr);
       })
       .catch(e => console.log(e));
-  }
+  }*/
 
-  /*getVendorData() {
+  getVendorData() {
     fetch(`${base}/api/getVendorData`, {
       method: "POST",
       headers: {
@@ -108,9 +107,9 @@ class Vendor extends Component {
           });
         }
       });
-  }*/
+  }
 
-  /*getVendorCategories() {
+  getVendorCategories() {
     fetch(`${base}/api/getVendorCategories`, {
       method: "POST",
       headers: {
@@ -145,7 +144,7 @@ class Vendor extends Component {
           this.getProducts(CategoryIdArr);
         }
       });
-  }*/
+  }
 
   handleClick(event) {
     let Cat = event.target.value;
