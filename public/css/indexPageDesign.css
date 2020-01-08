@@ -203,6 +203,9 @@ ul {
 	.gap {
 		display: none;
 	}
+	.mobileGap {
+		display: block;
+	}
 
 	.moreCat {
 		display: block;
@@ -416,6 +419,9 @@ ul {
 			{
 				display: none;
 			}
+			.logoMobile{
+				height:95px;
+			}
 
 
 		}
@@ -464,6 +470,11 @@ ul {
 			.gap {
 				display: none;
 			}
+
+			.mobileGap {
+				display: block;
+			}
+
 
 			.moreCat {
 				display: block;
@@ -665,6 +676,11 @@ ul {
 					display: none;
 				}
 
+				.logoMobile{
+					height:95px;
+				}
+
+
 
 
 			}
@@ -712,6 +728,11 @@ ul {
 				.gap {
 					display: none;
 				}
+
+				.mobileGap {
+					display: block;
+				}
+
 
 				.moreCat {
 					display: block;
@@ -913,6 +934,11 @@ ul {
 						display: none;
 					}
 
+					.logoMobile{
+						height:95px;
+					}
+
+
 
 
 
@@ -963,6 +989,11 @@ ul {
 					.gap {
 						display: none;
 					}
+
+					.mobileGap {
+						display: block;
+					}
+
 
 					.moreCat {
 						display: block;
@@ -1166,6 +1197,11 @@ ul {
 							display: none;
 						}
 
+						.logoMobile{
+							height:95px;
+						}
+
+
 
 
 					}
@@ -1208,6 +1244,11 @@ ul {
 
 						.gap {
 							display: block;
+						}
+
+
+						.mobileGap {
+							display: none;
 						}
 
 						.moreCat {
