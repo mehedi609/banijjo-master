@@ -230,10 +230,10 @@
 
     .spvmm_numbers_col ul.product_list li.spvmm_submm_li a.megamenu_a .availability span.available-now
     {
-       padding: 3px 10px;
-   }
+     padding: 3px 10px;
+ }
 
-   .spvmm_menu_child{
+ .spvmm_menu_child{
     position: relative;
     width: 100%;
     float: left;
@@ -446,19 +446,21 @@
       }
 
       .sp-vertical-megamenu .vf-megamenu li.spvmm-havechild .icon-close:after {
-        content: "\f0fe";
-        color: #999;
-    }
+       /* content: "\f0fe";
+       color: #999;*/
+       content: "\f106";
+       color: #000000;
+   }
 
-    .sp-vertical-megamenu .vf-megamenu .spvmm_container_menu_child
-    {
-        left: 0;
-        position: static;
-        display: block;
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        z-index: 99999;
-    }
+   .sp-vertical-megamenu .vf-megamenu .spvmm_container_menu_child
+   {
+    left: 0;
+    position: static;
+    display: block;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    z-index: 99999;
+}
 }
 @media (min-width:1290px) and (max-width: 1460px){
 	.spvmm_menu_child{
@@ -484,12 +486,12 @@
 	}
 }
 @media (min-width:981px) and (max-width: 1289px){
- .spvmm_menu_child{
-     max-width: 710px !important;
- }
+   .spvmm_menu_child{
+       max-width: 710px !important;
+   }
 
- .col4 > ul
- {
+   .col4 > ul
+   {
     width:25%;
 }
 
@@ -539,7 +541,7 @@
 
 
 @media (min-width:800px) and (max-width: 1286px){
-   .sp-vertical-megamenu .vf-megamenu .spvmm_container_menu_child{
+ .sp-vertical-megamenu .vf-megamenu .spvmm_container_menu_child{
     margin:0px auto;
     top:-9999em;
     position:absolute;

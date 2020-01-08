@@ -540,7 +540,7 @@ class ProductDetails extends Component {
           role="dialog"
           >
           <div className="modal-dialog" role="document">
-          <div className="modal-content" style={{ width: "900px" }}>
+          <div className="modal-content" style={{ width: "auto" }}>
           <div className="modal-header">
           <h5 className="modal-title" style={{ textAlign: "center" }}>
           &nbsp;
@@ -558,7 +558,10 @@ class ProductDetails extends Component {
 
           <div className="modal-body">
           <div className="row">
-          <div className="col-md-1 col-lg-1">
+
+          <div className="col-md-12 col-lg-12">
+
+          <p style={{ color: "#009345" }} className="checkDes">
           <i
           className="fa fa-check"
           style={{
@@ -567,11 +570,19 @@ class ProductDetails extends Component {
             backgroundColor: "#009345",
             borderRadius: "40px"
           }}
-          ></i>
-          </div>
-          <div className="col-md-11 col-lg-11">
-          <p style={{ color: "#009345" }}>
-          Nice. A new item has been added to your Shopping Cart.
+          ></i> Nice. A new item has been added to your Shopping Cart.
+          </p>
+
+          <p style={{ color: "#009345" }} className="checkMobile">
+          <i
+          className="fa fa-check"
+          style={{
+            fontSize: "20px",
+            color: "white",
+            backgroundColor: "#009345",
+            borderRadius: "40px"
+          }}
+          ></i> Nice. A new item has been added to your Shopping Cart.
           </p>
           </div>
           </div>
@@ -610,7 +621,7 @@ class ProductDetails extends Component {
 
           <div className="modal" id="WishListModal" tabIndex="-1" role="dialog">
           <div className="modal-dialog" role="document">
-          <div className="modal-content" style={{ width: "900px" }}>
+          <div className="modal-content" style={{ width: "auto" }}>
           <div className="modal-header">
           <h5 className="modal-title" style={{ textAlign: "center" }}>
           &nbsp;
@@ -628,7 +639,9 @@ class ProductDetails extends Component {
 
           <div className="modal-body">
           <div className="row">
-          <div className="col-md-1 col-lg-1">
+
+          <div className="col-md-12 col-lg-12">
+          <p style={{ color: "#009345" }} className="checkDes">
           <i
           className="fa fa-check"
           style={{
@@ -637,13 +650,20 @@ class ProductDetails extends Component {
             backgroundColor: "#009345",
             borderRadius: "40px"
           }}
-          ></i>
-          </div>
-          <div className="col-md-11 col-lg-11">
-          <p style={{ color: "#009345" }}>
-          Nice. A new item has been added to your Wish List.
+          ></i> Nice. A new item has been added to your Wish List.
           </p>
-          </div>
+
+          <p style={{ color: "#009345" }} className="checkMobile">
+          <i
+          className="fa fa-check"
+          style={{
+            fontSize: "20px",
+            color: "white",
+            backgroundColor: "#009345",
+            borderRadius: "40px"
+          }}
+          ></i> Nice. A new item has been added to your Wish List.
+          </p>          </div>
           </div>
           <div className="row">
           <div className="col-md-1 col-lg-1"></div>
@@ -996,7 +1016,7 @@ class ProductDetails extends Component {
                     aria-controls="tab_item-0"
                     role="tab"
                     >
-                    <span>OVERVIEWsss</span>
+                    <span>OVERVIEW</span>
                     </li>
                     <li
                     className="resp-tab-item"

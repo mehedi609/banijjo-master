@@ -46,6 +46,106 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
 </head>
 
+<!-- <script type="text/javascript">
+	$(document).ready(function(){
+
+        // Show hide popover
+
+        $(".dropdown").click(function(){
+
+        	$(this).find(".dropdown-menu").slideToggle("fast");
+
+        });
+
+    });
+
+	$(document).on("click", function(event){
+
+		var $trigger = $(".dropdown");
+
+		if($trigger !== event.target && !$trigger.has(event.target).length){
+
+			$(".dropdown-menu").slideUp("fast");
+
+		}            
+
+	});
+</script> -->
+
+<!-- <script type="text/javascript">
+	$(document).ready(function(){
+
+        // Show hide popover
+
+        $(".hotlineIconMenu").click(function(){
+
+        	//alert('sadsdsds');
+        	$('.accountMenu').hide();
+        	$('.helpMenu').hide();
+        	$('.hotlineMenu').show();
+
+        });
+
+        $(".accountMenuIcon").click(function(){
+
+        	//alert('sadsdsds');
+        	$('.hotlineMenu').hide();
+        	$('.helpMenu').hide();
+        	$('.accountMenu').show();
+
+        });
+
+        $(".helpIconMenu").click(function(){
+
+        	//alert('sadsdsds');
+        	$('.hotlineMenu').hide();
+        	$('.accountMenu').hide();
+        	$('.helpMenu').show();
+
+        });
+
+    });
+
+
+</script> -->
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+        // Show hide popover
+
+        $(".hotlineIconMenu").click(function(){
+
+        	//alert('sadsdsds');
+        	$('.accountMenu').removeClass('js-dropdown-active');
+        	$('.helpMenu').removeClass('is-active');
+        	$('.hotlineMenu').addClass('js-dropdown-active');
+
+        });
+
+        $(".accountMenuIcon").click(function(){
+
+        	//alert('sadsdsds');
+        	$('.hotlineMenu').removeClass('js-dropdown-active');
+        	$('.helpMenu').removeClass('is-active');
+        	$('.accountMenu').addClass('js-dropdown-active');
+
+        });
+
+        $(".helpIconMenu").click(function(){
+
+        	//alert('sadsdsds');
+        	$('.hotlineMenu').removeClass('js-dropdown-active');
+        	$('.accountMenu').removeClass('js-dropdown-active');
+        	$('.helpMenu').addClass('is-active');
+
+        });
+
+    });
+
+
+</script>
+
 <script>
 	function myFunction() {
 		var x = document.getElementById("myTopnav");
@@ -328,10 +428,10 @@ jQuery(document).ready(function($) {
 			<div class="columns small-2 large-4">
 				<ul class="dropdown hotLineIcon" data-dropdown-menu style="font-size: 16px;">
 
-					<li>
-						<a href="#"><i class="fa fa-phone-square" style="font-size:18px;color:#ec1624;margin-top:30px;
+					<li class="hotlineIconMenu">
+						<a href="#"><i class="fa fa-phone-square" style="font-size:18px;color:#009345;margin-top:30px;
 						"></i></a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu hotlineMenu">
 
 							<li><a href="#" style="color:#009345;font-weight:bold;">09677-222 222</a></li>
 
@@ -345,9 +445,9 @@ jQuery(document).ready(function($) {
 
 			<div class="columns small-2 large-4" style="margin-top:30px;">
 				<ul class="dropdown account" data-dropdown-menu style="font-size: 11px;">
-					<li class="has-submenu">
+					<li class="has-submenu accountMenuIcon">
 						<a href="#"><i class="fa fa-user-o" style="color:#009345;font-size: 16px;"></i></a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu accountMenu">
 							<li>
 								<div class="navbar-login">
 									<div class="row">
@@ -374,9 +474,9 @@ jQuery(document).ready(function($) {
 
 				<ul class="dropdown topMenu" data-dropdown-menu style="font-size: 16px;">
 
-					<li class="has-submenu">
+					<li class="has-submenu helpIconMenu">
 						<a href="#"><i class="fa fa-bars" style="color: #009345;"></i></a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu helpMenu">
 
 							<li><a href="http://admin.banijjo.com.bd/">Seller Center</a></li>
 							<li><a href="#">Help<span class="unread-message-count"></span></a></li>
@@ -404,7 +504,7 @@ jQuery(document).ready(function($) {
 				</li>
 				<li class="has-submenu" style="
 				padding-left: 24px;">
-				<a href="#"><i class="fa fa-phone-square" style="font-size:18px;color:#ec1624;font-weight: bold;"></i> <strong style="color:#009345;font-size:14px;font-weight: bold;">09677-222 222</strong></a>
+				<a href="#"><i class="fa fa-phone-square" style="font-size:18px;color:#009345;font-weight: bold;"></i> <strong style="color:#009345;font-size:14px;font-weight: bold;">09677-222 222</strong></a>
 
 			</li>
 			<li class="has-submenu">
