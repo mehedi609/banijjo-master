@@ -1,34 +1,42 @@
 const express = require("express");
-const util = require("util");
-const _ = require("lodash");
-const fetch = require("node-fetch");
+const bodyParser = require("body-parser");
 const mysql = require("mysql");
+const cors = require("cors");
+const util = require("util");
+const fetch = require("node-fetch");
+const _ = require("lodash");
+const app = express();
+
+app.use(cors());
+
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
+});
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 
 // banijjo.com.bd config
-const banijjo_com_bd = {
+const dbConnection = mysql.createConnection({
   host: "localhost",
   user: "microfin_ecom",
   password: "sikder!@#",
-  database: "microfin_ecommerce"
-};
-
-// banijjo local config
-const banijjo_local = {
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "ecommerce"
-};
-
-const { host, user, password, database } = banijjo_local;
-
-const dbConnection = mysql.createConnection({
-  host,
-  user,
-  password,
-  database
+  database: "microfin_banijjo"
 });
-
+const query = util.promisify(dbConnection.query).bind(dbConnection);
 dbConnection.connect(err => {
   if (err) {
     throw err;
@@ -36,18 +44,7 @@ dbConnection.connect(err => {
   console.log("Connected to database");
 });
 
-const query = util.promisify(dbConnection.query).bind(dbConnection);
-
-const router = express.Router();
-
-/*router.get("/categories", (req, res) => {
-  dbConnection.query("SELECT * FROM category", function(error, results) {
-    if (error) throw error;
-    return res.send({ error: false, data: results, message: "users list." });
-  });
-});*/
-
-router.get("/categories", async (req, res) => {
+app.get("/api/categories", async (req, res) => {
   try {
     const categories = await query("SELECT * FROM category");
     return res.send({ error: false, data: categories, message: "users list." });
@@ -57,19 +54,19 @@ router.get("/categories", async (req, res) => {
   }
 });
 
-router.get("/feature_name", async (req, res) => {
+app.get("/api/feature_name", async (req, res) => {
   const feature_name = await query("SELECT * FROM feature_name");
 
   return res.send(feature_name);
 });
 
-router.get("/feature_banner_products", async (req, res) => {
+app.get("/api/feature_banner_products", async (req, res) => {
   try {
     const banner_imags = await query(
       "SELECT products.id, products.product_name, products.home_image, products.category_id, products.vendor_id FROM `featured_banner_products` JOIN products ON featured_banner_products.product_id=products.id"
     );
 
-    return res.send({ data: banner_imags });
+    return res.json({ data: banner_imags });
   } catch (e) {
     console.error(e.message);
     return res.status(500).send("Server Error");
@@ -85,7 +82,7 @@ const _getProductInfoByCategoryId = async cat_id => {
 const _getRandEleFromArray = (my_arr, sampleSize) =>
   _.sampleSize(_.uniq(my_arr.map(({ id }) => id)), sampleSize);
 
-router.get("/feature_category", async (req, res) => {
+app.get("/api/feature_category", async (req, res) => {
   const null_cat_id = {
     category_id: null
   };
@@ -188,7 +185,7 @@ router.get("/feature_category", async (req, res) => {
   }
 });
 
-router.get("/all_product_list", async function(req, res, next) {
+app.get("/api/all_product_list", async function(req, res) {
   const resultArray = {};
   const feature_name = await query("SELECT * FROM feature_name");
   const categoryName = await query("SELECT * FROM category");
@@ -257,7 +254,7 @@ router.get("/all_product_list", async function(req, res, next) {
   });
 });
 
-router.get("/getDiscountByProductId/:product_id", async (req, res) => {
+app.get("/api/getDiscountByProductId/:product_id", async (req, res) => {
   try {
     let discountAmount = 0;
     const { product_id } = req.params;
@@ -279,7 +276,7 @@ router.get("/getDiscountByProductId/:product_id", async (req, res) => {
   }
 });
 
-router.post("/productDetails", async (req, res) => {
+app.post("/api/productDetails", async (req, res) => {
   const resultArray = {};
   const specificationActualArray = [];
   const productDetails = await query(
@@ -331,7 +328,7 @@ router.post("/productDetails", async (req, res) => {
 });
 var lastChildsAll = [];
 
-router.get("/sidebar_category", async (req, res) => {
+app.get("/api/sidebar_category", async (req, res) => {
   try {
     const categories = await query(
       `Select * FROM category_order WHERE status=1`
@@ -347,7 +344,7 @@ router.get("/sidebar_category", async (req, res) => {
   }
 });
 
-router.get("/child_categories", async (req, res) => {
+app.get("/api/child_categories", async (req, res) => {
   try {
     let c_id = req.query.id;
 
@@ -416,7 +413,7 @@ router.get("/child_categories", async (req, res) => {
   }
 });
 
-router.get("/all_category_list", async (req, res) => {
+app.get("/api/all_category_list", async (req, res) => {
   var categories = await query(
     "SELECT category.id,category.category_name,category_order.status from category_order LEFT JOIN category ON category_order.category_id = category.id"
   );
@@ -489,7 +486,7 @@ router.get("/all_category_list", async (req, res) => {
   });
 });
 
-router.get("/all_category_list_more", async (req, res) => {
+app.get("/api/all_category_list_more", async (req, res) => {
   var categories = await query(
     "SELECT * FROM category where parent_category_id=0"
   );
@@ -532,7 +529,7 @@ router.get("/all_category_list_more", async (req, res) => {
 });
 
 // new api
-router.post("/checkInventory", async (req, res) => {
+app.post("/api/checkInventory", async (req, res) => {
   try {
     const cartData = req.body.cartProducts;
     for (const i in cartData) {
@@ -587,7 +584,7 @@ router.post("/checkInventory", async (req, res) => {
 });
 
 // new api
-router.get("/getVendorImages", async (req, res) => {
+app.get("/api/getVendorImages", async (req, res) => {
   const vendorImages = await query(
     "SELECT vendor_id,logo from vendor_details WHERE softDel=0 AND status=1"
   );
@@ -595,7 +592,7 @@ router.get("/getVendorImages", async (req, res) => {
 });
 
 // Get request to fetch top navbar category
-router.get("/getTopNavbarCategory", async (req, res) => {
+app.get("/api/getTopNavbarCategory", async (req, res) => {
   const categories = await query(
     "SELECT * from category_top_navbar WHERE status=1"
   );
@@ -603,7 +600,7 @@ router.get("/getTopNavbarCategory", async (req, res) => {
 });
 
 // edited by sojib vai
-router.post("/payOrder", async (req, res) => {
+app.post("/api/payOrder", async (req, res) => {
   try {
     const tempSells = await query(
       "select temp_sell.customer_id,temp_sell.item_ids,temp_sell.quantity,products.productPrice from temp_sell left join products on temp_sell.item_ids=products.id where customer_id='" +
@@ -768,7 +765,7 @@ router.post("/payOrder", async (req, res) => {
 });
 
 // new api
-router.post("/getDiscounts", async (req, res) => {
+app.post("/api/getDiscounts", async (req, res) => {
   const discounts = await query(
     "SELECT * FROM discount WHERE effective_from <= NOW() AND effective_to >= NOW() AND softDel=0 AND status='active'"
   );
@@ -802,7 +799,7 @@ router.post("/getDiscounts", async (req, res) => {
     for (let j in parsedArr) {
       var specific = parseInt(parsedArr[j].id);
       if (cartIds.includes(specific) === true) {
-        for (const k in cartProductQty) {
+        for (let k in cartProductQty) {
           if (cartProductQty[k].productId == specific) {
             discountAmount =
               discountAmount +
@@ -827,10 +824,10 @@ router.post("/getDiscounts", async (req, res) => {
 });
 
 // new api
-router.post("/getPromoCodeAmount", async (req, res) => {
-  let promoCodeInput = req.body.promoCodeInput;
-  let totalAmount = req.body.totalAmount;
-  let customerId = req.body.customerId;
+app.post("/api/getPromoCodeAmount", async (req, res) => {
+  var promoCodeInput = req.body.promoCodeInput;
+  var totalAmount = req.body.totalAmount;
+  var customerId = req.body.customerId;
 
   const promo = await query(
     "SELECT * FROM promocode WHERE promo_code='" +
@@ -841,8 +838,8 @@ router.post("/getPromoCodeAmount", async (req, res) => {
     "select promo_code from sales where customer_id='" + customerId + "'"
   );
 
-  let consumedPromoAmount = 0;
-  let usedTimes = 0;
+  var consumedPromoAmount = 0;
+  var usedTimes = 0;
   if (customerSalesData.length > 0) {
     for (let i in customerSalesData) {
       const promoCodeArr = JSON.parse(customerSalesData[i].promo_code);
@@ -857,26 +854,26 @@ router.post("/getPromoCodeAmount", async (req, res) => {
   }
 
   const promoDetail = [];
-  let promoCodeAmount = 0;
+  var promoCodeAmount = 0;
   for (let i in promo) {
-    let invoice_amount = promo[i].invoice_amount;
-    let promo_amount = promo[i].promo_amount;
-    let promo_percantage = promo[i].promo_percantage;
-    let isMultiple = promo[i].isMultiple;
-    let valueAfterPercentageCalculation =
+    var invoice_amount = promo[i].invoice_amount;
+    var promo_amount = promo[i].promo_amount;
+    var promo_percantage = promo[i].promo_percantage;
+    var isMultiple = promo[i].isMultiple;
+    var valueAfterPercentageCalculation =
       (promo_percantage / 100) * totalAmount;
 
     if (valueAfterPercentageCalculation > promo_amount) {
-      var routerlicableAmount = promo_amount;
+      var applicableAmount = promo_amount;
     } else {
-      var routerlicableAmount = valueAfterPercentageCalculation;
+      var applicableAmount = valueAfterPercentageCalculation;
     }
 
     if (consumedPromoAmount < invoice_amount) {
       if (consumedPromoAmount > 0) {
         if (isMultiple === "yes") {
           if (promo[i].times > usedTimes) {
-            promoCodeAmount = promoCodeAmount + routerlicableAmount;
+            promoCodeAmount = promoCodeAmount + applicableAmount;
           } else {
             promoCodeAmount = promoCodeAmount;
           }
@@ -884,7 +881,7 @@ router.post("/getPromoCodeAmount", async (req, res) => {
           promoCodeAmount = promoCodeAmount;
         }
       } else {
-        promoCodeAmount = promoCodeAmount + routerlicableAmount;
+        promoCodeAmount = promoCodeAmount + applicableAmount;
       }
     }
   }
@@ -898,13 +895,13 @@ router.post("/getPromoCodeAmount", async (req, res) => {
 });
 
 // new api
-router.post("/paySsl", async (req, res) => {
+app.post("/api/paySsl", async (req, res) => {
   fetch("http://ecomservice.banijjo.com.bd/ssl", {
     method: "POST",
     crossDomain: true,
     headers: {
-      Accept: "routerlication/json",
-      "Content-Type": "routerlication/json"
+      Accept: "application/json",
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
       customerId: req.body.customerId,
@@ -926,7 +923,7 @@ router.post("/paySsl", async (req, res) => {
 });
 
 // revised api
-router.post("/loginCustomerInitial", async (req, res) => {
+app.post("/api/loginCustomerInitial", async (req, res) => {
   const loginCustomer = await query(
     "select * from customer where email='" +
       req.body.email +
@@ -946,8 +943,8 @@ router.post("/loginCustomerInitial", async (req, res) => {
 });
 
 // revised api
-// /saveCustomerInitial
-router.post("/saveCustomerInitial", async (req, res) => {
+// /api/saveCustomerInitial
+app.post("/api/saveCustomerInitial", async (req, res) => {
   const insertCustomer = await query(
     "INSERT INTO customer (email, password) VALUES ('" +
       req.body.email +
@@ -979,7 +976,7 @@ router.post("/saveCustomerInitial", async (req, res) => {
   return res.json({ message: "error" });
 });
 
-router.post("/add_cart_direct", async (req, res) => {
+app.post("/api/add_cart_direct", async (req, res) => {
   const checkIfExist = await query(
     "select * from temp_sell where item_ids='" +
       req.body.productId +
@@ -1010,7 +1007,7 @@ router.post("/add_cart_direct", async (req, res) => {
 });
 
 // new api
-router.post("/add_cart_direct_from_wish", async (req, res) => {
+app.post("/api/add_cart_direct_from_wish", async (req, res) => {
   const checkIfExist = await query(
     "select * from temp_sell where item_ids='" +
       req.body.productId +
@@ -1042,7 +1039,7 @@ router.post("/add_cart_direct_from_wish", async (req, res) => {
   return res.send({ error: false, data: true, message: "success" });
 });
 
-router.post("/add_wish_direct", async (req, res) => {
+app.post("/api/add_wish_direct", async (req, res) => {
   const checkIfExist = await query(
     "select * from wish_list where item_ids='" +
       req.body.productId +
@@ -1072,7 +1069,7 @@ router.post("/add_wish_direct", async (req, res) => {
   return res.send({ error: false, data: true, message: "success" });
 });
 
-router.post("/saveCustomerAddress", async (req, res) => {
+app.post("/api/saveCustomerAddress", async (req, res) => {
   let updateCustomerShipping = await query(
     "UPDATE customer SET name='" +
       req.body.name +
@@ -1093,7 +1090,7 @@ router.post("/saveCustomerAddress", async (req, res) => {
   }
 });
 
-router.post("/getCustomerCartProducts", async (req, res) => {
+app.post("/api/getCustomerCartProducts", async (req, res) => {
   let cartProducts = "";
   if (req.body.customerId === 0) {
     const uniqueProductIds = JSON.parse(req.body.uniqueProductIds);
@@ -1119,7 +1116,7 @@ router.post("/getCustomerCartProducts", async (req, res) => {
 });
 
 // new api
-router.post("/getCustomerWishProducts", async (req, res) => {
+app.post("/api/getCustomerWishProducts", async (req, res) => {
   let cartProducts = "";
   if (req.body.customerId === 0) {
     const uniqueProductIds = JSON.parse(req.body.uniqueProductIds);
@@ -1145,7 +1142,7 @@ router.post("/getCustomerWishProducts", async (req, res) => {
 });
 
 // new api
-router.post("/updateCustomerCartProducts", async (req, res) => {
+app.post("/api/updateCustomerCartProducts", async (req, res) => {
   if (req.body.type == 0) {
     await query(
       "UPDATE temp_sell SET quantity=quantity-1 WHERE quantity>0 AND customer_id='" +
@@ -1167,7 +1164,7 @@ router.post("/updateCustomerCartProducts", async (req, res) => {
 });
 
 // new api
-router.post("/updateCustomerWishProducts", async (req, res) => {
+app.post("/api/updateCustomerWishProducts", async (req, res) => {
   if (req.body.type == 0) {
     await query(
       "UPDATE wish_list SET quantity=quantity-1 WHERE quantity>0 AND customer_id='" +
@@ -1189,7 +1186,7 @@ router.post("/updateCustomerWishProducts", async (req, res) => {
 });
 
 // new api
-router.post("/deleteCustomerCartProducts", async (req, res) => {
+app.post("/api/deleteCustomerCartProducts", async (req, res) => {
   await query(
     "DELETE FROM temp_sell WHERE customer_id='" +
       req.body.customerId +
@@ -1201,7 +1198,7 @@ router.post("/deleteCustomerCartProducts", async (req, res) => {
 });
 
 // new api
-router.post("/deleteCustomerWishProducts", async (req, res) => {
+app.post("/api/deleteCustomerWishProducts", async (req, res) => {
   await query(
     "DELETE FROM wish_list WHERE customer_id='" +
       req.body.customerId +
@@ -1214,23 +1211,28 @@ router.post("/deleteCustomerWishProducts", async (req, res) => {
 
 // @route   POST api/getVendorData
 // @desc    Get vendor details from vendor_details
-router.post("/getVendorData", async (req, res) => {
-  const vendorData = await query(
-    "SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = '" +
-      req.body.vendorId +
-      "'"
-  );
+app.post("/api/getVendorData", async (req, res) => {
+  try {
+    const vendorData = await query(
+      "SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = '" +
+        req.body.vendorId +
+        "'"
+    );
 
-  return res.send({
-    error: false,
-    data: vendorData[0],
-    message: "Vendor Info"
-  });
+    return res.send({
+      error: false,
+      data: vendorData[0],
+      message: "Vendor Info"
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // @route   POST api/getVendorCategories
 // @desc    Get vendor details
-router.post("/getVendorCategories", async (req, res) => {
+app.post("/api/getVendorCategories", async (req, res) => {
   try {
     const VendorCategoryData = await query(
       "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
@@ -1250,7 +1252,7 @@ router.post("/getVendorCategories", async (req, res) => {
 });
 
 // new api
-router.post("/getVendorProductsByCategory", async (req, res) => {
+app.post("/api/getVendorProductsByCategory", async (req, res) => {
   try {
     const { vendorId, categoryIds } = req.body;
 
@@ -1271,7 +1273,7 @@ router.post("/getVendorProductsByCategory", async (req, res) => {
 });
 
 // new api
-router.get("/getAdvertisement", async (req, res) => {
+app.get("/api/getAdvertisement", async (req, res) => {
   try {
     const advertData = await query(
       "SELECT image from advertisement WHERE status=1 AND softDel=0"
@@ -1287,20 +1289,25 @@ router.get("/getAdvertisement", async (req, res) => {
   }
 });
 
-router.post("/getCustomerCartProductsCount", async (req, res) => {
-  const customerProductCount = await query(
-    "SELECT COUNT(customer_id) as counting from temp_sell WHERE customer_id = '" +
-      req.body.customerId +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: customerProductCount,
-    message: "customer cart product list."
-  });
+app.post("/api/getCustomerCartProductsCount", async (req, res) => {
+  try {
+    const customerProductCount = await query(
+      "SELECT COUNT(customer_id) as counting from temp_sell WHERE customer_id = '" +
+        req.body.customerId +
+        "'"
+    );
+    return res.send({
+      error: false,
+      data: customerProductCount,
+      message: "customer cart product list."
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
-router.get("/all_category_product_list", async (req, res) => {
+app.get("/api/all_category_product_list", async (req, res) => {
   try {
     const productLists = await query(`select category.category_name, products.id, products.product_name, products.home_image, products.category_id, products.productPrice
 from category join products on category.id = products.category_id
@@ -1323,9 +1330,9 @@ where products.qc_status='yes' and products.status='active' and products.isAppro
 });
 
 // api created by mehedi
-router.get("/category_product_list", async (req, res) => {
+app.get("/api/category_product_list", async (req, res) => {
   try {
-    var parentId = req.query.id;
+    const parentId = req.query.id;
 
     const productLists = await query(
       "SELECT * FROM products WHERE category_id = " +
@@ -1339,81 +1346,92 @@ router.get("/category_product_list", async (req, res) => {
       message: "all category product list."
     });
   } catch (e) {
-    console.log("Error occured at the of fetching data from product table");
-    console.log(e);
-
-    return res.send({
-      error: true,
-      data: [],
-      message: "Error....."
-    });
+    console.error(e.message);
+    res.status(500).send("Server Error");
   }
 });
 
-router.get("/get_terms_conditions", async (req, res) => {
-  const termsCOnditions = await query("SELECT * FROM terms_conditions");
-  return res.send({
-    error: false,
-    data: termsCOnditions[0].terms_and_conditions,
-    message: "terms"
-  });
+app.get("/api/get_terms_conditions", async (req, res) => {
+  try {
+    const termsCOnditions = await query("SELECT * FROM terms_conditions");
+    return res.send({
+      error: false,
+      data: termsCOnditions[0].terms_and_conditions,
+      message: "terms"
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // new api
-router.post("/getCustomerInfo", async (req, res) => {
-  const customerInfo = await query(
-    "SELECT * FROM customer WHERE id='" + req.body.customerId + "'"
-  );
-  if (customerInfo) {
-    const returnData = customerInfo[0];
-    return res.send({
-      error: false,
-      data: returnData,
-      message: "Customer Info"
-    });
-  } else {
-    const returnData = [];
-    return res.send({
-      error: false,
-      data: returnData,
-      message: "Customer Info"
-    });
+app.post("/api/getCustomerInfo", async (req, res) => {
+  try {
+    const customerInfo = await query(
+      "SELECT * FROM customer WHERE id='" + req.body.customerId + "'"
+    );
+    if (customerInfo) {
+      const returnData = customerInfo[0];
+      return res.send({
+        error: false,
+        data: returnData,
+        message: "Customer Info"
+      });
+    } else {
+      const returnData = [];
+      return res.send({
+        error: false,
+        data: returnData,
+        message: "Customer Info"
+      });
+    }
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
   }
 });
 
-router.post("/searchProductList", async (req, res) => {
-  var searchKey = req.body.searchKey;
-  const productLists = await query(
-    "SELECT * FROM products WHERE product_name LIKE '%" +
-      searchKey +
-      "%' or product_name LIKE '" +
-      searchKey +
-      "%' or product_name LIKE '%" +
-      searchKey +
-      "' or product_name='" +
-      searchKey +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: productLists,
-    message: "all search product list."
-  });
+app.post("/api/searchProductList", async (req, res) => {
+  try {
+    const { searchKey } = req.body;
+    const productLists = await query(
+      "SELECT * FROM products WHERE product_name LIKE '%" +
+        searchKey +
+        "%' or product_name LIKE '" +
+        searchKey +
+        "%' or product_name LIKE '%" +
+        searchKey +
+        "' or product_name='" +
+        searchKey +
+        "'"
+    );
+    return res.send({
+      error: false,
+      data: productLists,
+      message: "all search product list."
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
-router.get("/search_filter_products", async (req, res) => {
-  const results = await query(
+app.get("/api/search_filter_products", (req, res) => {
+  dbConnection.query(
     'SELECT * FROM products WHERE vendor_id = "' +
       req.query.vendorId +
       '" AND category_id = "' +
       req.query.categoryList +
-      '"'
+      '"',
+    function(error, results, fields) {
+      if (error) throw error;
+      return res.send({ data: results, message: "data" });
+    }
   );
-
-  return res.send({ data: results, message: "data" });
 });
 
-router.get("/search_purchase_products", (req, res) => {
+app.get("/api/search_purchase_products", (req, res) => {
   var searchedProducts = [];
 
   new Promise(function(resolve, reject) {
@@ -1425,7 +1443,7 @@ router.get("/search_purchase_products", (req, res) => {
         '%" OR product_sku LIKE "%' +
         req.query.id +
         '%" ',
-      function(error, results) {
+      function(error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
           resolve(results);
@@ -1477,7 +1495,7 @@ router.get("/search_purchase_products", (req, res) => {
     });
 });
 
-router.get("/product_list", (req, res) => {
+app.get("/api/product_list", (req, res) => {
   dbConnection.query(
     `SELECT * FROM products WHERE softDelete = 0 AND isApprove='authorize' AND status = 'active' limit 5`,
     function(error, results) {
@@ -1491,8 +1509,10 @@ router.get("/product_list", (req, res) => {
   );
 });
 
-router.post("/saveCategory", (req, res) => {
+app.post("/api/saveCategory", (req, res) => {
   return res.send(req.body);
 });
 
-module.exports = router;
+app.listen(3001, () =>
+  console.log("Express server is running on localhost:3001")
+);

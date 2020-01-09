@@ -1,37 +1,10 @@
 const express = require("express");
-const util = require("util");
 const bodyParser = require("body-parser");
+const mysql = require("mysql");
 const cors = require("cors");
+const util = require("util");
 const _ = require("lodash");
 const fetch = require("node-fetch");
-const mysql = require("mysql");
-
-// banijjo.com.bd config
-const banijjo_com_bd = {
-  host: "localhost",
-  user: "microfin_ecom",
-  password: "sikder!@#",
-  database: "microfin_ecommerce"
-};
-
-const { host, user, password, database } = banijjo_com_bd;
-
-const dbConnection = mysql.createConnection({
-  host,
-  user,
-  password,
-  database
-});
-
-dbConnection.connect(err => {
-  if (err) {
-    throw err;
-  }
-  console.log("Connected to database");
-});
-
-const query = util.promisify(dbConnection.query).bind(dbConnection);
-
 const app = express();
 
 app.use(cors());
@@ -55,11 +28,23 @@ app.use(
     extended: true
   })
 );
-app.use(express.json({ extended: false }));
 
-// app.use("/api", api);
+// banijjo.com.bd config
+const dbConnection = mysql.createConnection({
+  host: "localhost",
+  user: "microfin_ecom",
+  password: "sikder!@#",
+  database: "microfin_banijjo"
+});
+const query = util.promisify(dbConnection.query).bind(dbConnection);
+dbConnection.connect(err => {
+  if (err) {
+    throw err;
+  }
+  console.log("Connected to database");
+});
 
-app.get("/categories", async (req, res) => {
+app.get("/api/categories", async (req, res) => {
   try {
     const categories = await query("SELECT * FROM category");
     return res.send({ error: false, data: categories, message: "users list." });
@@ -69,35 +54,35 @@ app.get("/categories", async (req, res) => {
   }
 });
 
-app.get("/feature_name", async (req, res) => {
+app.get("/api/feature_name", async (req, res) => {
   const feature_name = await query("SELECT * FROM feature_name");
 
   return res.send(feature_name);
 });
 
-app.get("/feature_banner_products", async (req, res) => {
+app.get("/api/feature_banner_products", async (req, res) => {
   try {
     const banner_imags = await query(
       "SELECT products.id, products.product_name, products.home_image, products.category_id, products.vendor_id FROM `featured_banner_products` JOIN products ON featured_banner_products.product_id=products.id"
     );
 
-    return res.json(banner_imags);
+    return res.send({ data: banner_imags });
   } catch (e) {
     console.error(e.message);
     return res.status(500).send("Server Error");
   }
 });
 
-const getProductInfoByCategoryId = async cat_id => {
+const _getProductInfoByCategoryId = async cat_id => {
   return await query(
     `Select category_id,home_image from products where category_id=${cat_id} and softDelete=0 and isApprove='authorize' and status='active'`
   );
 };
 
-const getRandEleFromArray = (my_arr, sampleSize) =>
+const _getRandEleFromArray = (my_arr, sampleSize) =>
   _.sampleSize(_.uniq(my_arr.map(({ id }) => id)), sampleSize);
 
-app.get("/feature_category", async (req, res) => {
+app.get("/api/feature_category", async (req, res) => {
   const null_cat_id = {
     category_id: null
   };
@@ -109,7 +94,7 @@ app.get("/feature_category", async (req, res) => {
 
     for (const fc_id of featured_categories) {
       const { category_id } = fc_id;
-      let products = await getProductInfoByCategoryId(category_id);
+      let products = await _getProductInfoByCategoryId(category_id);
 
       resObj.parent =
         products[products.length > 1 ? _.random(0, products.length - 1) : 0];
@@ -118,13 +103,13 @@ app.get("/feature_category", async (req, res) => {
         `SELECT * FROM category WHERE parent_category_id=${category_id} AND status='active'`
       );
 
-      const cat_id_arr = getRandEleFromArray(child_cats, 2);
+      const cat_id_arr = _getRandEleFromArray(child_cats, 2);
 
       if (cat_id_arr) {
         let temp_child_img = [];
         for (const id of cat_id_arr) {
           if (id) {
-            const res = await getProductInfoByCategoryId(id);
+            const res = await _getProductInfoByCategoryId(id);
             temp_child_img.push(res[0] ? res[0] : null_cat_id);
           }
         }
@@ -146,7 +131,7 @@ app.get("/feature_category", async (req, res) => {
               `SELECT id FROM category WHERE parent_category_id=${category_id}`
             );
 
-            gc1 = res ? getRandEleFromArray(res, 3) : [];
+            gc1 = res ? _getRandEleFromArray(res, 3) : [];
           }
         } else {
           if (category_id !== null) {
@@ -154,7 +139,7 @@ app.get("/feature_category", async (req, res) => {
               `SELECT id FROM category WHERE parent_category_id=${category_id}`
             );
 
-            gc2 = res ? getRandEleFromArray(res, 3) : [];
+            gc2 = res ? _getRandEleFromArray(res, 3) : [];
           }
         }
       }
@@ -166,7 +151,7 @@ app.get("/feature_category", async (req, res) => {
 
         if (gc1[i]) {
           let id = gc1[i];
-          let prodImgs = await getProductInfoByCategoryId(id);
+          let prodImgs = await _getProductInfoByCategoryId(id);
           gcImgsObj.gc1 =
             prodImgs.length > 3 ? _.sampleSize(prodImgs, 3) : prodImgs;
         } else {
@@ -175,7 +160,7 @@ app.get("/feature_category", async (req, res) => {
 
         if (gc2[i]) {
           let id = gc2[i];
-          let prodImgs = await getProductInfoByCategoryId(id);
+          let prodImgs = await _getProductInfoByCategoryId(id);
           gcImgsObj.gc2 =
             prodImgs.length > 3 ? _.sampleSize(prodImgs, 3) : prodImgs;
         } else {
@@ -193,18 +178,14 @@ app.get("/feature_category", async (req, res) => {
       res_arr.push(resObj);
     }
 
-    return res.json({
-      error: false,
-      data: res_arr,
-      message: "all Subcategory list."
-    });
+    return res.json({ data: res_arr });
   } catch (e) {
     console.error(e.message);
-    res.send("Server Error");
+    res.status(500).send("Server Error");
   }
 });
 
-app.get("/all_product_list", async function(req, res, next) {
+app.get("/api/all_product_list", async function(req, res) {
   const resultArray = {};
   const feature_name = await query("SELECT * FROM feature_name");
   const categoryName = await query("SELECT * FROM category");
@@ -273,7 +254,7 @@ app.get("/all_product_list", async function(req, res, next) {
   });
 });
 
-app.get("/getDiscountByProductId/:product_id", async (req, res) => {
+app.get("/api/getDiscountByProductId/:product_id", async (req, res) => {
   try {
     let discountAmount = 0;
     const { product_id } = req.params;
@@ -295,7 +276,7 @@ app.get("/getDiscountByProductId/:product_id", async (req, res) => {
   }
 });
 
-app.post("/productDetails", async (req, res) => {
+app.post("/api/productDetails", async (req, res) => {
   const resultArray = {};
   const specificationActualArray = [];
   const productDetails = await query(
@@ -347,7 +328,7 @@ app.post("/productDetails", async (req, res) => {
 });
 var lastChildsAll = [];
 
-app.get("/sidebar_category", async (req, res) => {
+app.get("/api/sidebar_category", async (req, res) => {
   try {
     const categories = await query(
       `Select * FROM category_order WHERE status=1`
@@ -363,7 +344,7 @@ app.get("/sidebar_category", async (req, res) => {
   }
 });
 
-app.get("/child_categories", async (req, res) => {
+app.get("/api/child_categories", async (req, res) => {
   try {
     let c_id = req.query.id;
 
@@ -432,7 +413,7 @@ app.get("/child_categories", async (req, res) => {
   }
 });
 
-app.get("/all_category_list", async (req, res) => {
+app.get("/api/all_category_list", async (req, res) => {
   var categories = await query(
     "SELECT category.id,category.category_name,category_order.status from category_order LEFT JOIN category ON category_order.category_id = category.id"
   );
@@ -505,7 +486,7 @@ app.get("/all_category_list", async (req, res) => {
   });
 });
 
-app.get("/all_category_list_more", async (req, res) => {
+app.get("/api/all_category_list_more", async (req, res) => {
   var categories = await query(
     "SELECT * FROM category where parent_category_id=0"
   );
@@ -548,7 +529,7 @@ app.get("/all_category_list_more", async (req, res) => {
 });
 
 // new api
-app.post("/checkInventory", async (req, res) => {
+app.post("/api/checkInventory", async (req, res) => {
   try {
     const cartData = req.body.cartProducts;
     for (const i in cartData) {
@@ -603,7 +584,7 @@ app.post("/checkInventory", async (req, res) => {
 });
 
 // new api
-app.get("/getVendorImages", async (req, res) => {
+app.get("/api/getVendorImages", async (req, res) => {
   const vendorImages = await query(
     "SELECT vendor_id,logo from vendor_details WHERE softDel=0 AND status=1"
   );
@@ -611,7 +592,7 @@ app.get("/getVendorImages", async (req, res) => {
 });
 
 // Get request to fetch top navbar category
-app.get("/getTopNavbarCategory", async (req, res) => {
+app.get("/api/getTopNavbarCategory", async (req, res) => {
   const categories = await query(
     "SELECT * from category_top_navbar WHERE status=1"
   );
@@ -619,7 +600,7 @@ app.get("/getTopNavbarCategory", async (req, res) => {
 });
 
 // edited by sojib vai
-app.post("/payOrder", async (req, res) => {
+app.post("/api/payOrder", async (req, res) => {
   try {
     const tempSells = await query(
       "select temp_sell.customer_id,temp_sell.item_ids,temp_sell.quantity,products.productPrice from temp_sell left join products on temp_sell.item_ids=products.id where customer_id='" +
@@ -784,7 +765,7 @@ app.post("/payOrder", async (req, res) => {
 });
 
 // new api
-app.post("/getDiscounts", async (req, res) => {
+app.post("/api/getDiscounts", async (req, res) => {
   const discounts = await query(
     "SELECT * FROM discount WHERE effective_from <= NOW() AND effective_to >= NOW() AND softDel=0 AND status='active'"
   );
@@ -843,7 +824,7 @@ app.post("/getDiscounts", async (req, res) => {
 });
 
 // new api
-app.post("/getPromoCodeAmount", async (req, res) => {
+app.post("/api/getPromoCodeAmount", async (req, res) => {
   let promoCodeInput = req.body.promoCodeInput;
   let totalAmount = req.body.totalAmount;
   let customerId = req.body.customerId;
@@ -914,7 +895,7 @@ app.post("/getPromoCodeAmount", async (req, res) => {
 });
 
 // new api
-app.post("/paySsl", async (req, res) => {
+app.post("/api/paySsl", async (req, res) => {
   fetch("http://ecomservice.banijjo.com.bd/ssl", {
     method: "POST",
     crossDomain: true,
@@ -942,7 +923,7 @@ app.post("/paySsl", async (req, res) => {
 });
 
 // revised api
-app.post("/loginCustomerInitial", async (req, res) => {
+app.post("/api/loginCustomerInitial", async (req, res) => {
   const loginCustomer = await query(
     "select * from customer where email='" +
       req.body.email +
@@ -963,7 +944,7 @@ app.post("/loginCustomerInitial", async (req, res) => {
 
 // revised api
 // /saveCustomerInitial
-app.post("/saveCustomerInitial", async (req, res) => {
+app.post("/api/saveCustomerInitial", async (req, res) => {
   const insertCustomer = await query(
     "INSERT INTO customer (email, password) VALUES ('" +
       req.body.email +
@@ -995,7 +976,7 @@ app.post("/saveCustomerInitial", async (req, res) => {
   return res.json({ message: "error" });
 });
 
-app.post("/add_cart_direct", async (req, res) => {
+app.post("/api/add_cart_direct", async (req, res) => {
   const checkIfExist = await query(
     "select * from temp_sell where item_ids='" +
       req.body.productId +
@@ -1026,7 +1007,7 @@ app.post("/add_cart_direct", async (req, res) => {
 });
 
 // new api
-app.post("/add_cart_direct_from_wish", async (req, res) => {
+app.post("/api/add_cart_direct_from_wish", async (req, res) => {
   const checkIfExist = await query(
     "select * from temp_sell where item_ids='" +
       req.body.productId +
@@ -1058,7 +1039,7 @@ app.post("/add_cart_direct_from_wish", async (req, res) => {
   return res.send({ error: false, data: true, message: "success" });
 });
 
-app.post("/add_wish_direct", async (req, res) => {
+app.post("/api/add_wish_direct", async (req, res) => {
   const checkIfExist = await query(
     "select * from wish_list where item_ids='" +
       req.body.productId +
@@ -1088,7 +1069,7 @@ app.post("/add_wish_direct", async (req, res) => {
   return res.send({ error: false, data: true, message: "success" });
 });
 
-app.post("/saveCustomerAddress", async (req, res) => {
+app.post("/api/saveCustomerAddress", async (req, res) => {
   let updateCustomerShipping = await query(
     "UPDATE customer SET name='" +
       req.body.name +
@@ -1109,7 +1090,7 @@ app.post("/saveCustomerAddress", async (req, res) => {
   }
 });
 
-app.post("/getCustomerCartProducts", async (req, res) => {
+app.post("/api/getCustomerCartProducts", async (req, res) => {
   let cartProducts = "";
   if (req.body.customerId === 0) {
     const uniqueProductIds = JSON.parse(req.body.uniqueProductIds);
@@ -1135,7 +1116,7 @@ app.post("/getCustomerCartProducts", async (req, res) => {
 });
 
 // new api
-app.post("/getCustomerWishProducts", async (req, res) => {
+app.post("/api/getCustomerWishProducts", async (req, res) => {
   let cartProducts = "";
   if (req.body.customerId === 0) {
     const uniqueProductIds = JSON.parse(req.body.uniqueProductIds);
@@ -1161,7 +1142,7 @@ app.post("/getCustomerWishProducts", async (req, res) => {
 });
 
 // new api
-app.post("/updateCustomerCartProducts", async (req, res) => {
+app.post("/api/updateCustomerCartProducts", async (req, res) => {
   if (req.body.type == 0) {
     await query(
       "UPDATE temp_sell SET quantity=quantity-1 WHERE quantity>0 AND customer_id='" +
@@ -1183,7 +1164,7 @@ app.post("/updateCustomerCartProducts", async (req, res) => {
 });
 
 // new api
-app.post("/updateCustomerWishProducts", async (req, res) => {
+app.post("/api/updateCustomerWishProducts", async (req, res) => {
   if (req.body.type == 0) {
     await query(
       "UPDATE wish_list SET quantity=quantity-1 WHERE quantity>0 AND customer_id='" +
@@ -1205,7 +1186,7 @@ app.post("/updateCustomerWishProducts", async (req, res) => {
 });
 
 // new api
-app.post("/deleteCustomerCartProducts", async (req, res) => {
+app.post("/api/deleteCustomerCartProducts", async (req, res) => {
   await query(
     "DELETE FROM temp_sell WHERE customer_id='" +
       req.body.customerId +
@@ -1217,7 +1198,7 @@ app.post("/deleteCustomerCartProducts", async (req, res) => {
 });
 
 // new api
-app.post("/deleteCustomerWishProducts", async (req, res) => {
+app.post("/api/deleteCustomerWishProducts", async (req, res) => {
   await query(
     "DELETE FROM wish_list WHERE customer_id='" +
       req.body.customerId +
@@ -1230,23 +1211,28 @@ app.post("/deleteCustomerWishProducts", async (req, res) => {
 
 // @route   POST api/getVendorData
 // @desc    Get vendor details from vendor_details
-app.post("/getVendorData", async (req, res) => {
-  const vendorData = await query(
-    "SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = '" +
-      req.body.vendorId +
-      "'"
-  );
+app.post("/api/getVendorData", async (req, res) => {
+  try {
+    const vendorData = await query(
+      "SELECT name,logo,cover_photo from vendor_details WHERE vendor_id = '" +
+        req.body.vendorId +
+        "'"
+    );
 
-  return res.send({
-    error: false,
-    data: vendorData[0],
-    message: "Vendor Info"
-  });
+    return res.send({
+      error: false,
+      data: vendorData[0],
+      message: "Vendor Info"
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // @route   POST api/getVendorCategories
 // @desc    Get vendor details
-app.post("/getVendorCategories", async (req, res) => {
+app.post("/api/getVendorCategories", async (req, res) => {
   try {
     const VendorCategoryData = await query(
       "SELECT DISTINCT(category_id),category_name from products LEFT JOIN category ON category.id = products.category_id WHERE vendor_id = '" +
@@ -1266,12 +1252,10 @@ app.post("/getVendorCategories", async (req, res) => {
 });
 
 // new api
-app.post("/getVendorProductsByCategory", async (req, res) => {
+app.post("/api/getVendorProductsByCategory", async (req, res) => {
   try {
     const { vendorId, categoryIds } = req.body;
 
-    console.log("vendorId", vendorId);
-    console.log("categoryIds", categoryIds);
     const ProductData = await query(
       "SELECT id,category_id,product_name,productPrice,home_image,created_date from products WHERE status='active' AND softDelete=0 AND vendor_id = '" +
         vendorId +
@@ -1289,7 +1273,7 @@ app.post("/getVendorProductsByCategory", async (req, res) => {
 });
 
 // new api
-app.get("/getAdvertisement", async (req, res) => {
+app.get("/api/getAdvertisement", async (req, res) => {
   try {
     const advertData = await query(
       "SELECT image from advertisement WHERE status=1 AND softDel=0"
@@ -1305,20 +1289,25 @@ app.get("/getAdvertisement", async (req, res) => {
   }
 });
 
-app.post("/getCustomerCartProductsCount", async (req, res) => {
-  const customerProductCount = await query(
-    "SELECT COUNT(customer_id) as counting from temp_sell WHERE customer_id = '" +
-      req.body.customerId +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: customerProductCount,
-    message: "customer cart product list."
-  });
+app.post("/api/getCustomerCartProductsCount", async (req, res) => {
+  try {
+    const customerProductCount = await query(
+      "SELECT COUNT(customer_id) as counting from temp_sell WHERE customer_id = '" +
+        req.body.customerId +
+        "'"
+    );
+    return res.send({
+      error: false,
+      data: customerProductCount,
+      message: "customer cart product list."
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
-app.get("/all_category_product_list", async (req, res) => {
+app.get("/api/all_category_product_list", async (req, res) => {
   try {
     const productLists = await query(`select category.category_name, products.id, products.product_name, products.home_image, products.category_id, products.productPrice
 from category join products on category.id = products.category_id
@@ -1329,21 +1318,15 @@ where products.qc_status='yes' and products.status='active' and products.isAppro
       message: "all category product list."
     });
   } catch (e) {
-    console.log("Error occured at the of fetching data from product table");
-    console.log(e);
-
-    return res.send({
-      error: true,
-      data: [],
-      message: "Error....."
-    });
+    console.error(e.message);
+    res.status(500).send("Server Error");
   }
 });
 
 // api created by mehedi
-app.get("/category_product_list", async (req, res) => {
+app.get("/api/category_product_list", async (req, res) => {
   try {
-    var parentId = req.query.id;
+    const parentId = req.query.id;
 
     const productLists = await query(
       "SELECT * FROM products WHERE category_id = " +
@@ -1368,58 +1351,73 @@ app.get("/category_product_list", async (req, res) => {
   }
 });
 
-app.get("/get_terms_conditions", async (req, res) => {
-  const termsCOnditions = await query("SELECT * FROM terms_conditions");
-  return res.send({
-    error: false,
-    data: termsCOnditions[0].terms_and_conditions,
-    message: "terms"
-  });
-});
-
-// new api
-app.post("/getCustomerInfo", async (req, res) => {
-  const customerInfo = await query(
-    "SELECT * FROM customer WHERE id='" + req.body.customerId + "'"
-  );
-  if (customerInfo) {
-    const returnData = customerInfo[0];
+app.get("/api/get_terms_conditions", async (req, res) => {
+  try {
+    const termsCOnditions = await query("SELECT * FROM terms_conditions");
     return res.send({
       error: false,
-      data: returnData,
-      message: "Customer Info"
+      data: termsCOnditions[0].terms_and_conditions,
+      message: "terms"
     });
-  } else {
-    const returnData = [];
-    return res.send({
-      error: false,
-      data: returnData,
-      message: "Customer Info"
-    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
   }
 });
 
-app.post("/searchProductList", async (req, res) => {
-  var searchKey = req.body.searchKey;
-  const productLists = await query(
-    "SELECT * FROM products WHERE product_name LIKE '%" +
-      searchKey +
-      "%' or product_name LIKE '" +
-      searchKey +
-      "%' or product_name LIKE '%" +
-      searchKey +
-      "' or product_name='" +
-      searchKey +
-      "'"
-  );
-  return res.send({
-    error: false,
-    data: productLists,
-    message: "all search product list."
-  });
+// new api
+app.post("/api/getCustomerInfo", async (req, res) => {
+  try {
+    const customerInfo = await query(
+      "SELECT * FROM customer WHERE id='" + req.body.customerId + "'"
+    );
+    if (customerInfo) {
+      const returnData = customerInfo[0];
+      return res.send({
+        error: false,
+        data: returnData,
+        message: "Customer Info"
+      });
+    } else {
+      const returnData = [];
+      return res.send({
+        error: false,
+        data: returnData,
+        message: "Customer Info"
+      });
+    }
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
 });
 
-/*router.get("/search_filter_products", (req, res) => {
+app.post("/api/searchProductList", async (req, res) => {
+  try {
+    const { searchKey } = req.body;
+    const productLists = await query(
+      "SELECT * FROM products WHERE product_name LIKE '%" +
+        searchKey +
+        "%' or product_name LIKE '" +
+        searchKey +
+        "%' or product_name LIKE '%" +
+        searchKey +
+        "' or product_name='" +
+        searchKey +
+        "'"
+    );
+    return res.send({
+      error: false,
+      data: productLists,
+      message: "all search product list."
+    });
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+app.get("/search_filter_products", (req, res) => {
   dbConnection.query(
     'SELECT * FROM products WHERE vendor_id = "' +
       req.query.vendorId +
@@ -1431,21 +1429,9 @@ app.post("/searchProductList", async (req, res) => {
       return res.send({ data: results, message: "data" });
     }
   );
-});*/
-
-app.get("/search_filter_products", async (req, res) => {
-  const results = await query(
-    'SELECT * FROM products WHERE vendor_id = "' +
-      req.query.vendorId +
-      '" AND category_id = "' +
-      req.query.categoryList +
-      '"'
-  );
-
-  return res.send({ data: results, message: "data" });
 });
 
-app.get("/search_purchase_products", (req, res) => {
+app.get("/api/search_purchase_products", (req, res) => {
   var searchedProducts = [];
 
   new Promise(function(resolve, reject) {
@@ -1509,7 +1495,7 @@ app.get("/search_purchase_products", (req, res) => {
     });
 });
 
-app.get("/product_list", (req, res) => {
+app.get("/api/product_list", (req, res) => {
   dbConnection.query(
     `SELECT * FROM products WHERE softDelete = 0 AND isApprove='authorize' AND status = 'active' limit 5`,
     function(error, results) {
@@ -1523,7 +1509,7 @@ app.get("/product_list", (req, res) => {
   );
 });
 
-app.post("/saveCategory", (req, res) => {
+app.post("/api/saveCategory", (req, res) => {
   return res.send(req.body);
 });
 

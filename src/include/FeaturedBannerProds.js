@@ -15,12 +15,12 @@ const FeaturedBannerProds = ({ prodsImags }) => {
 
   return (
     <OwlCarousel className="owl-theme" margin={10} {...options}>
-      {prodsImags.map(({ home_image }, index) => (
+      {prodsImags.map(({ home_image }) => (
         <div className="frameSlider">
           <span className="helperSlider" style={{ paddingBottom: "10px" }}>
             <img
               src={`${fileUrl}/upload/product/productImages/${home_image}`}
-              alt="Product Image."
+              alt="Image."
             />
           </span>
         </div>
