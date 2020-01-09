@@ -128,7 +128,6 @@ class Breadcums extends Component {
     className="fa fa-shopping-cart"
     style={{ fontSize: "40px" }}
     ></i>{" "}
-    Cart
     <span
     className="badge badge-light"
     style={{ backgroundColor: "#ec1624" }}
@@ -154,7 +153,7 @@ class Breadcums extends Component {
     ></i>{" "}
     <span
     class="badge badge-light"
-    style={{ backgroundColor: "#ec1624", fontSize: "13px" }}
+    style={{backgroundColor: "#ffffff", fontSize: "13px",color: "#ec1624" }}
     >
     {this.state.cartItemCount > 0
       ? this.state.cartItemCount
