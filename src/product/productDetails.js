@@ -1008,7 +1008,7 @@ class ProductDetails extends Component {
                     <div className="sap_tabs">
                     <div
                     id="horizontalTab1"
-                    style={{ display: "block", width: "100%", margin: "0px" }}
+                    style={{ display: "block", width: "100%", margin: "0px",paddingLeft:"6px"}}
                     >
                     <ul>
                     <li

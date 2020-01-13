@@ -73,11 +73,11 @@ class ProductList extends Component {
                 <div className="product-grid7">
                   <div className="product-image7">
                     <a href={"/productDetails/" + item.id}>
-                      <div
-                        className="frameProductImg"
-                        style={{ borderBottom: "1px solid #ddd" }}
-                      >
-                        <span className="helperProductImg">
+                    <div
+                    className="frameProductImg"
+                    style={{ borderBottom: "1px solid #ddd" }}
+                    >
+                    <span className="helperProductImg">
                           <img
                             className="pic-1"
                             src={

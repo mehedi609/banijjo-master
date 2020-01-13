@@ -153,7 +153,7 @@ class Breadcums extends Component {
     ></i>{" "}
     <span
     class="badge badge-light"
-    style={{backgroundColor: "#ffffff", fontSize: "13px",color: "#ec1624" }}
+    style={{backgroundColor: "transparent", fontSize: "13px",color: "#ec1624" }}
     >
     {this.state.cartItemCount > 0
       ? this.state.cartItemCount
